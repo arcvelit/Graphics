@@ -135,8 +135,8 @@ void renderSceneGlobal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
                         {
                             // Make sure we're not bouncing 
 
-                            // Ray probably terminates
-                            if (output.probterminate <= distribution(generator)) break;
+                            // Ray terminating
+                            if (output.probterminate <= distribution(generator)) {}
                         }
 
                         // ===============================================================================
