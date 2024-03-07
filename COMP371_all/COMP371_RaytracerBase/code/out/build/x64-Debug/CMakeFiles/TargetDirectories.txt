@@ -1,0 +1,3 @@
+C:/Users/louka/source/repos/COMP371_dockerimage/COMP371_all/COMP371_RaytracerBase/code/out/build/x64-Debug/CMakeFiles/raytracer.dir
+C:/Users/louka/source/repos/COMP371_dockerimage/COMP371_all/COMP371_RaytracerBase/code/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/Users/louka/source/repos/COMP371_dockerimage/COMP371_all/COMP371_RaytracerBase/code/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
