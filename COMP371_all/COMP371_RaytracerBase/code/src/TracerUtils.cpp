@@ -35,26 +35,16 @@ bool tu_InsideRectangle(const Geometry& rectangle, Point &p)
     return (s1 == s2 && s2 == s3 && s3 == s4);
 }
 
-PairedRoot tu_SmallestPositiveRoot(std::vector<PairedRoot>& roots)
-{
-    PairedRoot root = roots[0];
-    for (PairedRoot r : roots)
-        if (r.root > 0 && r.root < root.root)
-            root = r;
-    return root;
-}
-
 bool tu_CloseToZero(float value)
 {
     const float TOLERANCE = 1e-4;
     return std::fabs(value) < TOLERANCE;
 }
 
-
 PairedRoot tu_IntersectSceneGeometries(Ray &ray, SceneInfo &scene)
 {
     PairedRoot hit = PairedRoot(nullptr, -1.0f);
-    for (const Geometry& geometry : scene.geometries)
+    for (Geometry &geometry : scene.geometries)
     {
         if (geometry.type == SPHERE)
         {
@@ -68,3 +58,25 @@ PairedRoot tu_IntersectSceneGeometries(Ray &ray, SceneInfo &scene)
     return hit;
 }
 
+Eigen::Matrix3f tu_GetLocalCoordinatesFrame(Vec3 &normal)
+{
+        int i = normal.array().abs().maxCoeff();
+        Vec3 V;
+        V.setZero();
+        V.coeffRef(i) = 1.0f;
+
+        Eigen::Matrix3f model_frame;
+        Vec3 x_plane = V.cross(normal).normalized();
+        Vec3 y_plane = normal.cross(x_plane).normalized();
+
+        model_frame.col(0) = x_plane;
+        model_frame.col(1) = normal;
+        model_frame.col(2) = y_plane;
+
+        return model_frame;
+}
+
+bool tu_PointInShadow(Point &light_center, PairedRoot &eclipse, PairedRoot &hit, Point &p)
+{
+    return (eclipse.geometry != nullptr && eclipse.geometry != hit.geometry) && ((light_center - p).squaredNorm() > eclipse.root * eclipse.root);
+}

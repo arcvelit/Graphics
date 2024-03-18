@@ -40,11 +40,11 @@ void renderSceneLocal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
     float delta_s = -(IMAGE_WIDTH  * DELTA - DELTA) / 2;
 
     // Traveling on xy axis of the viewport
-    for (int y = 0; y < output.size[1]; y++)
+    for (int y = 0; y < IMAGE_HEIGHT; y++)
     {
         Vec3 u_vec = up * (delta_u - y * DELTA);
 
-        for (int x = 0; x < output.size[0]; x++)
+        for (int x = 0; x < IMAGE_WIDTH; x++)
         {
             Vec3 s_vec = side * (delta_s + x * DELTA); 
             Point grid_center = viewport_center + u_vec + s_vec;
@@ -56,7 +56,7 @@ void renderSceneLocal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
             if (hit.geometry == nullptr) continue;
 
 
-            Point p = viewportRay.origin + hit.root * viewportRay.direction;
+            Point p = viewportRay.reach(hit.root);
 
             Vec3 Nhat;
             if (hit.geometry->type == RECTANGLE) Nhat = hit.geometry->normal;
@@ -76,11 +76,8 @@ void renderSceneLocal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
 
                     PairedRoot eclipse = tu_IntersectSceneGeometries(lightRay, scene);
 
-                    // Geometry eclipses thethe light.
-                    // p to light < p to eclipse
-                    // |light.center - p| < eclipse.root
-                    if ((eclipse.geometry != nullptr && eclipse.geometry != hit.geometry) &&
-                        (light.center - p).squaredNorm() > eclipse.root * eclipse.root)
+                    // Geometry eclipses the light
+                    if (tu_PointInShadow(light.center, eclipse, hit, p))
                     {
                         continue;
                     }
@@ -93,10 +90,9 @@ void renderSceneLocal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
                     IB += diffuseFactor * hit.geometry->dc[2] * light.id[2];
 
                     // Specular light
-                    Vec3 Rhat = 2 * (lightRay.direction.dot(Nhat)) * Nhat - lightRay.direction;
-                    Vec3 Vhat = -viewportRay.direction;
+                    Vec3 Hhat = (lightRay.direction - viewportRay.direction).normalized();
 
-                    float speculativeFactor = hit.geometry->ks * std::pow(std::max(0.0f, Vhat.dot(Rhat)), hit.geometry->pc);
+                    float speculativeFactor = hit.geometry->ks * std::pow(std::max(0.0f, Nhat.dot(Hhat)), hit.geometry->pc);
 
                     IR += speculativeFactor * hit.geometry->sc[0] * light.is[0];
                     IG += speculativeFactor * hit.geometry->sc[1] * light.is[1];
@@ -135,8 +131,7 @@ void renderSceneLocal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
 
                             PairedRoot eclipse = tu_IntersectSceneGeometries(lightRay, scene);
 
-                            if ((eclipse.geometry != nullptr && eclipse.geometry != hit.geometry) &&
-                                (cell_center - p).squaredNorm() > eclipse.root * eclipse.root)
+                            if (tu_PointInShadow(cell_center, eclipse, hit, p))
                             {
                                 continue;
                             }
@@ -149,10 +144,9 @@ void renderSceneLocal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
                             sum_IB += diffuseFactor * hit.geometry->dc[2] * light.id[2];
 
                             // Specular light
-                            Vec3 Rhat = 2 * (lightRay.direction.dot(Nhat)) * Nhat - lightRay.direction;
-                            Vec3 Vhat = -viewportRay.direction;
+                            Vec3 Hhat = (lightRay.direction - viewportRay.direction).normalized();
 
-                            float speculativeFactor = hit.geometry->ks * std::pow(std::max(0.0f, Vhat.dot(Rhat)), hit.geometry->pc);
+                            float speculativeFactor = hit.geometry->ks * std::pow(std::max(0.0f, Nhat.dot(Hhat)), hit.geometry->pc);
 
                             sum_IR += speculativeFactor * hit.geometry->sc[0] * light.is[0];
                             sum_IG += speculativeFactor * hit.geometry->sc[1] * light.is[1];
@@ -180,5 +174,6 @@ void renderSceneLocal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
             buffer[3 * (x + IMAGE_WIDTH * y) + 2] = std::min(1.0, IB);
 
         }
+        std::cout << 100*y/IMAGE_HEIGHT << "%\t\r" << std::flush;
     }
 }

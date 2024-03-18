@@ -92,7 +92,7 @@ Geometry::Geometry(const nlohmann::json &geometry)
         }
     }
 
-    // Normal after transforms
+    // Normals after transforms
     if (type == RECTANGLE)
     {
         Vec3 v12 = p2 - p1;

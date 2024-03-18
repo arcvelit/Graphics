@@ -75,12 +75,15 @@ void Ray::intersectRectangle(const Geometry& rectangle, PairedRoot& hit)
         float t = GdotN / VdotN;
         Vec3 p = origin + t * direction;
 
-
-
         if (tu_InsideRectangle(rectangle, p) && t > 1e-4 && (hit.root < 0 || hit.root > t))
         {
             hit.geometry = &rectangle;
             hit.root = t;
         }
     }
+}
+
+Point Ray::reach(float distance)
+{
+    return origin + distance * direction;
 }

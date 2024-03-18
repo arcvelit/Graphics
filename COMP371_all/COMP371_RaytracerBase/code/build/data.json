@@ -19,7 +19,6 @@
         "pc":0,
 
         "visible": true
-
     },
         {
             "comment":"right_wall",
@@ -311,28 +310,7 @@
 
             "visible": true
 
-        },
-{
-        "comment":"balls",
-        "type":"sphere",
-
-        "centre":[278, 540, -279.5],
-        "radius":30,
-
-
-        "ac":[1,1,0],
-        "dc":[1,1,0],
-        "sc":[0,0,0],
-
-        "ka":0,
-        "kd":1,
-        "ks":0,
-
-        "pc":0,
-
-        "visible": false
-
-    }
+        }
 
     ],
     "light":[
@@ -345,7 +323,8 @@
             "p4":[213, 540,-227],
             "id":[1, 1, 1],
             "is":[1, 1, 1],
-            "n": 5
+            "n": 5,
+            "usecenter": true
         },
         {
             "type":"point",
@@ -356,7 +335,7 @@
         }
     ],
     "output":[{
-        "filename":"cornell_box.ppm",
+        "filename":"cornell_box_bugged.ppm",
         "size":[500,500],
         "lookat":[0,0,-1],
         "up":[0,1,0],
@@ -366,9 +345,9 @@
         "bkc":[0.5,0.5,0.5],
 
         "globalillum": true,
-        "raysperpixel": [5,4,3],
+        "raysperpixel": [10, 10],
         "maxbounces": 3,
-        "probterminate": 0.333
+        "probterminate": 0.33
     }
     ]
 }

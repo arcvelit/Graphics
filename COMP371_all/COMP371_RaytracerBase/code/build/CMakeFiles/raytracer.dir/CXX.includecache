@@ -449,8 +449,6 @@ Geometry.h
 /COMP371/COMP371_RaytracerBase/code/src/Geometry.h
 PairedRoot.h
 /COMP371/COMP371_RaytracerBase/code/src/PairedRoot.h
-Eigen/Dense
--
 vector
 -
 
@@ -472,6 +470,28 @@ OutputInfo.h
 json.hpp
 /COMP371/COMP371_RaytracerBase/code/src/json.hpp
 vector
+-
+
+/COMP371/COMP371_RaytracerBase/code/src/TracerUtils.cpp
+TracerUtils.h
+/COMP371/COMP371_RaytracerBase/code/src/TracerUtils.h
+Types.h
+/COMP371/COMP371_RaytracerBase/code/src/Types.h
+PairedRoot.h
+/COMP371/COMP371_RaytracerBase/code/src/PairedRoot.h
+Geometry.h
+/COMP371/COMP371_RaytracerBase/code/src/Geometry.h
+SceneInfo.h
+/COMP371/COMP371_RaytracerBase/code/src/SceneInfo.h
+Ray.h
+/COMP371/COMP371_RaytracerBase/code/src/Ray.h
+Eigen/Dense
+-
+cmath
+-
+vector
+-
+algorithm
 -
 
 /COMP371/COMP371_RaytracerBase/code/src/TracerUtils.h

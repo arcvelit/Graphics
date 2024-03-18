@@ -5,8 +5,6 @@
 #include "Geometry.h"
 #include "PairedRoot.h"
 
-#include <Eigen/Dense>
-
 #include <vector>
 
 
@@ -19,6 +17,7 @@ public:
 	Ray(Point origin, Vec3 direction);
 	void intersectSphere(const Geometry& sphere, PairedRoot& root);
 	void intersectRectangle(const Geometry& rectangle, PairedRoot& root);
+	Point reach(float distance);
 
 };
 

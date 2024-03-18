@@ -21,7 +21,8 @@ class OutputInfo
     // Optional fields
     std::vector<unsigned int> raysperpixel;
     bool antialiasing, twosiderender, globalillum;
-    float probterminate, maxbounces;
+    float probterminate;
+    unsigned int maxbounces;
 
 
     OutputInfo(const nlohmann::json &output);

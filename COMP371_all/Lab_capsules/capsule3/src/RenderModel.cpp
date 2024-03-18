@@ -72,16 +72,20 @@ namespace TAPP {
             }
         }
         
-    //    cout<<"Mesh has: "<<indices.size()/3<<": faces!"<<endl;
+        //    cout<<"Mesh has: "<<indices.size()/3<<": faces!"<<endl;
+        //std::cout << "Number of positions: " << positions.size() / 3 << std::endl;
+        std::cout << "Number of normals  : " << normals.size() / 3 << std::endl;
+        std::cout << "Number of vertices : " << vertices.size() / 3 << std::endl;
 
-        
+        std::cout << "Number of indices  : " << indices.size() << std::endl;
+        std::cout << "Number of faces    : " << m_obj.faces.size() << std::endl;
+
+
         // 0 - create the vertex array object
         glGenVertexArrays(1, &m_VAO);
         glBindVertexArray(m_VAO);
         
-        
-        cout<<"Sizes: "<<sizeof(vertices)<<" "<<sizeof(normals)<<" "<<sizeof(indices)<<" "<<sizeof(unsigned int)<<" "<<sizeof(float)<<endl;
-        
+                
         // create the vertex buffer object -- first entry in the renderer
         glGenBuffers(1, &m_VBO);
         glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
@@ -259,6 +263,7 @@ void RenderModel::render(){
         }
     
         glDrawElements(GL_TRIANGLES, m_obj.faces.size()*3, GL_UNSIGNED_INT, 0);
+
         
         if(is_error()){
             cout<<"Err 343"<<endl;

@@ -34,14 +34,15 @@ OutputInfo::OutputInfo(const nlohmann::json &output)
     // Optional fields
 
     // Default values
+    globalillum = false;
+    antialiasing = false;
     twosiderender = true;
-    maxbounces = 0.0;
     probterminate = 0.0;
+    maxbounces = 0;
 
     //
     if (output.contains("probterminate")) { probterminate = output["probterminate"]; }
     if (output.contains("twosiderender")) { twosiderender = output["twosiderender"]; }
-    if (output.contains("antialiasing")) { antialiasing = output["antialiasing"]; }
     if (output.contains("globalillum")) { globalillum = output["globalillum"]; }
     if (output.contains("maxbounces")) { maxbounces = output["maxbounces"]; }
     if (output.contains("raysperpixel"))
@@ -49,5 +50,10 @@ OutputInfo::OutputInfo(const nlohmann::json &output)
         nlohmann::json rpp = output["raysperpixel"];
         int size = rpp.size();
         for (int i = 0; i < size; i++) raysperpixel.push_back(rpp[i]);
+    }
+    if (!globalillum && output.contains("antialiasing"))
+    { 
+        antialiasing = output["antialiasing"]; 
+        maxbounces = 0;
     }
 }
