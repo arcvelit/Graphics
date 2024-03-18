@@ -243,6 +243,3 @@ docker image prune
 * `delete_image.{sh,ps1}`: deletes the image named `comp371:W22`
 * `rebuild.{sh,ps1}`: deletes the container and image and rebuilds them
 
-=======
-# Raytracer
-// TODO: Write steps
