@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # COMP371 Docker Image
 
 ## Overview
@@ -247,4 +246,3 @@ docker image prune
 =======
 # Raytracer
 // TODO: Write steps
->>>>>>> ed2b58fd7eb0939689344180ae20e2a1529e2676
