@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # COMP371 Docker Image
 
 ## Overview
@@ -244,7 +243,3 @@ docker image prune
 * `delete_image.{sh,ps1}`: deletes the image named `comp371:W22`
 * `rebuild.{sh,ps1}`: deletes the container and image and rebuilds them
 
-=======
-# Raytracer
-// TODO: Write steps
->>>>>>> ed2b58fd7eb0939689344180ae20e2a1529e2676
