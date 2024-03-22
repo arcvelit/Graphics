@@ -12,8 +12,9 @@
 class OutputInfo
 {
     public:
-    Eigen::Vector3f center, up, lookat;
-    RGB bkc, ai;
+    Point center;
+    Vec3 up, lookat;
+    Color bkc, ai;
     std::string filename;
     unsigned int size[2];
     float fov;

@@ -19,7 +19,7 @@ class Geometry {
 public:
     Shape type;
     float ka, kd, ks, pc;
-    RGB ac, dc, sc;
+    Property ac, dc, sc;
     bool visible;
     std::string comment;
 

@@ -336,7 +336,7 @@
     ],
     "output":[{
         "filename":"cornell_box_bugged.ppm",
-        "size":[500,500],
+        "size":[100,100],
         "lookat":[0,0,-1],
         "up":[0,1,0],
         "fov":40,

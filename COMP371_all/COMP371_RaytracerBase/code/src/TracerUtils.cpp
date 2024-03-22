@@ -58,22 +58,29 @@ PairedRoot tu_IntersectSceneGeometries(Ray &ray, SceneInfo &scene)
     return hit;
 }
 
-Eigen::Matrix3f tu_GetLocalCoordinatesFrame(Vec3 &normal)
+Eigen::Matrix3f tu_GetLocalCoordinatesFrame(Vec3 &normal, Vec3 &V)
 {
-        int i = normal.array().abs().maxCoeff();
-        Vec3 V;
-        V.setZero();
-        V.coeffRef(i) = 1.0f;
+    Eigen::Matrix3f model_frame;
+    Vec3 x_plane_vector = normal.cross(V).normalized();
+    Vec3 z_plane_vector = normal.cross(x_plane_vector).normalized();
 
-        Eigen::Matrix3f model_frame;
-        Vec3 x_plane = V.cross(normal).normalized();
-        Vec3 y_plane = normal.cross(x_plane).normalized();
+    model_frame.col(0) = x_plane_vector;
+    model_frame.col(1) = normal;
+    model_frame.col(2) = z_plane_vector;
 
-        model_frame.col(0) = x_plane;
-        model_frame.col(1) = normal;
-        model_frame.col(2) = y_plane;
+    return model_frame;
+}
 
-        return model_frame;
+Vec3 tu_GetNormal(Point &p, const Geometry* geometry)
+{
+    if (geometry->type == SPHERE) return (p - geometry->center).normalized();
+    return geometry->normal;
+}
+
+void tu_GammaCorrection(Color &color)
+{
+    const float GAMMA = 2.2;
+    color = color.array().pow(1/GAMMA); 
 }
 
 bool tu_PointInShadow(Point &light_center, PairedRoot &eclipse, PairedRoot &hit, Point &p)

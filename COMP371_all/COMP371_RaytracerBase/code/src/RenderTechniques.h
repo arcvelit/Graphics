@@ -7,6 +7,7 @@
 
 void renderSceneLocal(Buffer& buffer, SceneInfo& scene, OutputInfo& output);
 void renderSceneGlobal(Buffer& buffer, SceneInfo& scene, OutputInfo& output);
+void renderSceneAntialiasing(Buffer& buffer, SceneInfo& scene, OutputInfo& output);
 
 
 #endif

@@ -258,6 +258,33 @@ main.cpp.s:
 	$(MAKE) -f CMakeFiles/raytracer.dir/build.make CMakeFiles/raytracer.dir/main.cpp.s
 .PHONY : main.cpp.s
 
+src/Antialiasing.o: src/Antialiasing.cpp.o
+
+.PHONY : src/Antialiasing.o
+
+# target to build an object file
+src/Antialiasing.cpp.o:
+	$(MAKE) -f CMakeFiles/raytracer.dir/build.make CMakeFiles/raytracer.dir/src/Antialiasing.cpp.o
+.PHONY : src/Antialiasing.cpp.o
+
+src/Antialiasing.i: src/Antialiasing.cpp.i
+
+.PHONY : src/Antialiasing.i
+
+# target to preprocess a source file
+src/Antialiasing.cpp.i:
+	$(MAKE) -f CMakeFiles/raytracer.dir/build.make CMakeFiles/raytracer.dir/src/Antialiasing.cpp.i
+.PHONY : src/Antialiasing.cpp.i
+
+src/Antialiasing.s: src/Antialiasing.cpp.s
+
+.PHONY : src/Antialiasing.s
+
+# target to generate assembly for a file
+src/Antialiasing.cpp.s:
+	$(MAKE) -f CMakeFiles/raytracer.dir/build.make CMakeFiles/raytracer.dir/src/Antialiasing.cpp.s
+.PHONY : src/Antialiasing.cpp.s
+
 src/BufferUtils.o: src/BufferUtils.cpp.o
 
 .PHONY : src/BufferUtils.o
@@ -579,6 +606,9 @@ help:
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
+	@echo "... src/Antialiasing.o"
+	@echo "... src/Antialiasing.i"
+	@echo "... src/Antialiasing.s"
 	@echo "... src/BufferUtils.o"
 	@echo "... src/BufferUtils.i"
 	@echo "... src/BufferUtils.s"

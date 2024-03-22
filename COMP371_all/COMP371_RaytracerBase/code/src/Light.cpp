@@ -6,8 +6,8 @@
 
 Light::Light(const nlohmann::json &light)
 {
-    id = {light["id"][0], light["id"][1], light["id"][2]};
-    is = {light["is"][0], light["is"][1], light["is"][2]};
+    id = Color(light["id"][0], light["id"][1], light["id"][2]);
+    is = Color(light["is"][0], light["is"][1], light["is"][2]);
 
     // Point specifics
     if (light["type"] == "point")

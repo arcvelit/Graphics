@@ -13,7 +13,6 @@ class RayTracer
 
     // Constructor
     RayTracer(nlohmann::json data);
-
     // Methods
     void run();
 

@@ -24,7 +24,7 @@
 
 
 
-void renderSceneGlobal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
+void renderSceneAntialiasing(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
 {
     // Random
     unsigned int seed = static_cast<unsigned int>(std::chrono::system_clock::now().time_since_epoch().count());
@@ -46,14 +46,14 @@ void renderSceneGlobal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
     float delta_u = (IMAGE_HEIGHT * DELTA / 2) - DELTA;
     float delta_s = -(IMAGE_WIDTH * DELTA / 2);
 
-    // Stratification parameters
-    const int GLOBAL_RAYS_SPECIFICATION = output.raysperpixel.size(); 
 
     // Specification defaults
     uint rays_per_cell(10);
     uint number_of_columns(10);
     uint number_of_rows(10);
 
+    // Stratification parameters
+    const int GLOBAL_RAYS_SPECIFICATION = output.raysperpixel.size(); 
     if (GLOBAL_RAYS_SPECIFICATION == 1)
     {
         rays_per_cell = output.raysperpixel[0];
@@ -71,7 +71,7 @@ void renderSceneGlobal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
         number_of_rows     = output.raysperpixel[0];    
     }
 
-    const int RAYS_PER_GRID_PIXEL = rays_per_cell * number_of_rows * number_of_columns;
+    const int RAYS_PER_PIXEL = rays_per_cell * number_of_rows * number_of_columns;
 
     // Traveling on xy axis of the viewport
     for (int y = 0; y < IMAGE_HEIGHT; y++)
@@ -133,77 +133,8 @@ void renderSceneGlobal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
 
                         // Colored geometry point
                         Point p = viewportRay.reach(hit.root);
-
-                        // Intensities
-                        Property diffuse_damp = Property::Ones();
-
-                        bool ignore_ray(false);
-                        // Make rays bounce ==============================================================
-                        // Objective: modify damping factor and last geometry 
-                        PairedRoot last_hit = hit;
-                        for (int bounce = 0; bounce < output.maxbounces; bounce++) 
-                        {
-                            if (output.probterminate > distribution(generator)) { break; }
-
-                            Vec3 normal = tu_GetNormal(p, last_hit.geometry);
-
-                            // Hemisphere sampling
-                            float randX, randY, randZ;
-                            while (true)
-                            {
-                                randX = 2*distribution(generator)-1;
-                                randZ = 2*distribution(generator)-1;
-                                if (randX * randX + randZ * randZ < 1)
-                                {
-                                    randY = std::sqrt(1-randX*randX-randZ*randZ); 
-                                    break;
-                                }
-                            }
-                            Vec3 hemisphere_coordinates = Vec3(randX, randY, randZ);
-                            if (normal.dot(hemisphere_coordinates) < 0)
-                                hemisphere_coordinates *= -1;
-
-                            Vec3 random_vector = Vec3(
-                                2*distribution(generator)-1,
-                                2*distribution(generator)-1,
-                                2*distribution(generator)-1
-                            );
-                            random_vector.normalize();
-
-                            // Change orthogonal basis
-                            VecBasis model_frame = tu_GetLocalCoordinatesFrame(normal, random_vector);
-
-                            Vec3 bounce_direction = model_frame * hemisphere_coordinates;
-                            if (normal.dot(bounce_direction) < 0)
-                                bounce_direction *= -1;
-
-                            // Leap of faith bounce
-                            Ray bouncingRay = Ray(p, bounce_direction);
-
-                            PairedRoot collided = tu_IntersectSceneGeometries(bouncingRay, scene);
-
-                            // Collides not
-                            if (collided.geometry == nullptr) 
-                            { 
-                                voided_rays++;
-                                ignore_ray = true;
-                                break; 
-                            }
-
-                            // Damping of diffuse intensity
-                            float diffuseFactor = last_hit.geometry->kd * std::max(0.0f, bouncingRay.direction.dot(normal));
-
-                            diffuse_damp = diffuseFactor * diffuse_damp.cwiseProduct(last_hit.geometry->dc);
-
-                            // Update geometry
-                            p = bouncingRay.reach(collided.root);
-                            last_hit = collided;
-                        }
-                        // ===============================================================================
-                        // Now light it up
-                        if (ignore_ray) continue;
                         
-                        Vec3 Nhat = tu_GetNormal(p, last_hit.geometry);
+                        Vec3 Nhat = tu_GetNormal(p, hit.geometry);
 
                         for (Light light : scene.lights)
                         {
@@ -212,29 +143,31 @@ void renderSceneGlobal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
                             PairedRoot eclipse = tu_IntersectSceneGeometries(lightRay, scene);
 
                             // Geometry eclipses the light
-                            if (tu_PointInShadow(light.center, eclipse, last_hit, p)) {continue;}
+                            if (tu_PointInShadow(light.center, eclipse, hit, p)) {continue;}
 
                             // Diffuse light
-                            float diffuseFactor = last_hit.geometry->kd * std::max(0.0f, lightRay.direction.dot(Nhat));
+                            float diffuseFactor = hit.geometry->kd * std::max(0.0f, lightRay.direction.dot(Nhat));
+                            
+                            cell_COLOR += diffuseFactor * hit.geometry->dc.cwiseProduct(light.id);
 
-                            cell_COLOR += diffuseFactor * diffuse_damp.cwiseProduct(last_hit.geometry->dc).cwiseProduct(light.id);
+                            // Specular light
+                            Vec3 Hhat = (lightRay.direction - viewportRay.direction).normalized();
 
+                            float speculativeFactor = hit.geometry->ks * std::pow(std::max(0.0f, Nhat.dot(Hhat)), hit.geometry->pc);
+
+                            cell_COLOR += speculativeFactor * hit.geometry->sc.cwiseProduct(light.is);
                         }
+                            
+                        // Ambient light
+                        cell_COLOR += hit.geometry->ka * hit.geometry->ac.cwiseProduct(output.ai);
 
-                        // TODO: Add gamma correction
-                        tu_GammaCorrection(cell_COLOR);
                         COLOR += cell_COLOR.cwiseMin(Color::Ones());
-
                     }
 
                 }
             }
 
-            // TODO: Get rid of this
-            int counted_rays = RAYS_PER_GRID_PIXEL - voided_rays;
-            if (counted_rays > 0)
-            { COLOR = COLOR / counted_rays;}
-            else { COLOR = Color::Zero(); }
+            COLOR /= RAYS_PER_PIXEL;
 
 
             buffer[3 * (x + IMAGE_WIDTH * y) + 0] = (double)COLOR[0];
@@ -245,6 +178,3 @@ void renderSceneGlobal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
         std::cout << 100*y/IMAGE_HEIGHT << "%\t\r" << std::flush;
     }
 }
-
-
-

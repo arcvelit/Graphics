@@ -58,12 +58,10 @@ void renderSceneLocal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
 
             Point p = viewportRay.reach(hit.root);
 
-            Vec3 Nhat;
-            if (hit.geometry->type == RECTANGLE) Nhat = hit.geometry->normal;
-            else if (hit.geometry->type == SPHERE) Nhat = (p - hit.geometry->center).normalized();
+            Vec3 Nhat = tu_GetNormal(p, hit.geometry);
 
             // RGB Colors
-            double IR(0), IG(0), IB(0);
+            Color COLOR = Color::Zero();
 
             // Compute colors
             for (Light light : scene.lights)
@@ -85,18 +83,14 @@ void renderSceneLocal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
                     // Diffuse light
                     float diffuseFactor = hit.geometry->kd * std::max(0.0f, lightRay.direction.dot(Nhat));
 
-                    IR += diffuseFactor * hit.geometry->dc[0] * light.id[0];
-                    IG += diffuseFactor * hit.geometry->dc[1] * light.id[1];
-                    IB += diffuseFactor * hit.geometry->dc[2] * light.id[2];
+                    COLOR += diffuseFactor * hit.geometry->dc.cwiseProduct(light.id);
 
                     // Specular light
                     Vec3 Hhat = (lightRay.direction - viewportRay.direction).normalized();
 
                     float speculativeFactor = hit.geometry->ks * std::pow(std::max(0.0f, Nhat.dot(Hhat)), hit.geometry->pc);
 
-                    IR += speculativeFactor * hit.geometry->sc[0] * light.is[0];
-                    IG += speculativeFactor * hit.geometry->sc[1] * light.is[1];
-                    IB += speculativeFactor * hit.geometry->sc[2] * light.is[2];
+                    COLOR += speculativeFactor * hit.geometry->sc.cwiseProduct(light.is);
 
                 }
                 else if (light.type == AREA)
@@ -117,7 +111,7 @@ void renderSceneLocal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
                     Point bottom_left = light.p1 + x_square_size*x_strata/2 + y_square_size*y_strata/2;
 
                     // Colours
-                    float sum_IR(0), sum_IB(0), sum_IG(0);
+                    Color cell_COLOR = Color::Zero();
 
                     for (int i = 0; i < light.n; i++) 
                     {
@@ -139,39 +133,29 @@ void renderSceneLocal(Buffer& buffer, SceneInfo& scene, OutputInfo& output)
                             // Diffuse light
                             float diffuseFactor = hit.geometry->kd * std::max(0.0f, lightRay.direction.dot(Nhat));
 
-                            sum_IR += diffuseFactor * hit.geometry->dc[0] * light.id[0];
-                            sum_IG += diffuseFactor * hit.geometry->dc[1] * light.id[1];
-                            sum_IB += diffuseFactor * hit.geometry->dc[2] * light.id[2];
+                            cell_COLOR += diffuseFactor * hit.geometry->dc.cwiseProduct(light.id);
 
                             // Specular light
                             Vec3 Hhat = (lightRay.direction - viewportRay.direction).normalized();
 
                             float speculativeFactor = hit.geometry->ks * std::pow(std::max(0.0f, Nhat.dot(Hhat)), hit.geometry->pc);
 
-                            sum_IR += speculativeFactor * hit.geometry->sc[0] * light.is[0];
-                            sum_IG += speculativeFactor * hit.geometry->sc[1] * light.is[1];
-                            sum_IB += speculativeFactor * hit.geometry->sc[2] * light.is[2];
-
+                            cell_COLOR += speculativeFactor * hit.geometry->sc.cwiseProduct(light.is);
 
                         }
                     }
 
-                    IR += sum_IR / (light.n*light.n);
-                    IB += sum_IB / (light.n*light.n);
-                    IG += sum_IG / (light.n*light.n);
-
+                    COLOR += cell_COLOR / (light.n*light.n);
 
                 }
             }
 
             // Ambient light
-            IR += hit.geometry->ka * hit.geometry->ac[0] * output.ai[0];
-            IG += hit.geometry->ka * hit.geometry->ac[1] * output.ai[1];
-            IB += hit.geometry->ka * hit.geometry->ac[2] * output.ai[2];
+            COLOR += hit.geometry->ka * hit.geometry->ac.cwiseProduct(output.ai);
 
-            buffer[3 * (x + IMAGE_WIDTH * y) + 0] = std::min(1.0, IR);
-            buffer[3 * (x + IMAGE_WIDTH * y) + 1] = std::min(1.0, IG);
-            buffer[3 * (x + IMAGE_WIDTH * y) + 2] = std::min(1.0, IB);
+            buffer[3 * (x + IMAGE_WIDTH * y) + 0] = std::min(1.0, (double)COLOR[0]);
+            buffer[3 * (x + IMAGE_WIDTH * y) + 1] = std::min(1.0, (double)COLOR[1]);
+            buffer[3 * (x + IMAGE_WIDTH * y) + 2] = std::min(1.0, (double)COLOR[2]);
 
         }
         std::cout << 100*y/IMAGE_HEIGHT << "%\t\r" << std::flush;

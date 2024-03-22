@@ -16,9 +16,9 @@ Geometry::Geometry(const nlohmann::json &geometry)
     ks = geometry["ks"];
     pc = geometry["pc"];
 
-    ac = {geometry["ac"][0], geometry["ac"][1], geometry["ac"][2]};
-    dc = {geometry["dc"][0], geometry["dc"][1], geometry["dc"][2]};
-    sc = {geometry["sc"][0], geometry["sc"][1], geometry["sc"][2]};
+    ac = Property(geometry["ac"][0], geometry["ac"][1], geometry["ac"][2]);
+    dc = Property(geometry["dc"][0], geometry["dc"][1], geometry["dc"][2]);
+    sc = Property(geometry["sc"][0], geometry["sc"][1], geometry["sc"][2]);
 
     // Rectangle specifics
     if (geometry["type"] == "rectangle")

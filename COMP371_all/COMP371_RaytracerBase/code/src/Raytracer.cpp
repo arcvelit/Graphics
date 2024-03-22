@@ -26,19 +26,17 @@ void RayTracer::run() {
 
         Buffer buffer(CHANNELS * X_DIMENSION * Y_DIMENSION);
 
-        // Ignore area light 
-        if (output.antialiasing) for (Light light : scene.lights)
-        {
-            if (light.type == AREA) { output.antialiasing = false; break; }
-        }
-
-
         std::string renderTechnique = output.antialiasing ? "antialiasing" : (output.globalillum ? "global illumination" : "local illumination");
         std::cout << "Rendering [" << output.filename << "] with [" << renderTechnique << "]" << std::endl;
 
-        if (output.globalillum || output.antialiasing)
+        // TODO: Make sure they're redirected correctly
+        if (output.globalillum)
         {
             renderSceneGlobal(buffer, scene, output);
+        }
+        else if (output.antialiasing)
+        {
+            renderSceneAntialiasing(buffer, scene, output);
         }
         else
         {

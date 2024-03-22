@@ -15,9 +15,10 @@ OutputInfo::OutputInfo(const nlohmann::json &output)
 {
     lookat = Eigen::Vector3f(output["lookat"][0], output["lookat"][1], output["lookat"][2]);
     center = Eigen::Vector3f(output["centre"][0], output["centre"][1], output["centre"][2]);
-    bkc = {output["bkc"][0], output["bkc"][1], output["bkc"][2]};
     up = Eigen::Vector3f(output["up"][0], output["up"][1], output["up"][2]);
-    ai = {output["ai"][0], output["ai"][1], output["ai"][2]};
+    
+    bkc = Color(output["bkc"][0], output["bkc"][1], output["bkc"][2]);
+    ai  = Color(output["ai"][0], output["ai"][1], output["ai"][2]);
 
     filename = output["filename"];
     size[0] = output["size"][0];

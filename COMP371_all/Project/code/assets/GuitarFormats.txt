@@ -1,35 +1,37 @@
 Gibson SG
-	Backplate
-	Body
-	Bridge
-	Frets
-	JackInput
-	Knobs
-	NeckHead
-	PickGuard
-	PickupSwitch
-	Pickups
+#	Backplate
+#	Body
+#	Bridge
+#	Frets
+	GibsonLogo
+#	JackInput
+#	Knobs
+#	Neck
+#	Nut
+#	PickGuard
+#	PickupSwitch
+#	Pickups
 	Screws
-	Strings
-	TuningPegs
+#	Strings
+#	TuningPegs
 
 Gibson ES-335
-	Body
-	Bridge
-	JackInput
-	Knobs
+#	Body
+#	Bridge
+#	JackInput
+#	Knobs
 	Misc (screws and gibson logo on the head)
-	NeckHead
-	PickGuard
-	Pickups
-	PickupSwitch
-	Strings
-	TuningPegs
+#	NeckHead
+#	PickGuard
+#	Pickups
+#	PickupSwitch
+#	Strings
+#	TuningPegs
 
 Accoustic
-	Body
-	Bridge
-	BridgePins
-	NeckHead
-	Strings
-	TuningPegs
+#	Body
+#	Bridge
+#	BridgePins
+#	NeckHead
+#	Strings
+#	TuningPegs

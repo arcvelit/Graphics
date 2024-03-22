@@ -17,7 +17,7 @@ class Light
 {
     public:
     LightType type;
-    RGB id, is;
+    Color id, is;
     bool use;
 
 
@@ -27,10 +27,10 @@ class Light
     bool usecenter;
 
     // Point specifics
-    Eigen::Vector3f center;
+    Point center;
 
     // Area specifics
-    Eigen::Vector3f p1, p2, p3, p4;
+    Point p1, p2, p3, p4;
 
 
     Light(const nlohmann::json &light);

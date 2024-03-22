@@ -4,6 +4,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/raytracer.dir/external/test_json.cpp.o"
   "CMakeFiles/raytracer.dir/external/test_ppm.cpp.o"
   "CMakeFiles/raytracer.dir/main.cpp.o"
+  "CMakeFiles/raytracer.dir/src/Antialiasing.cpp.o"
   "CMakeFiles/raytracer.dir/src/BufferUtils.cpp.o"
   "CMakeFiles/raytracer.dir/src/Geometry.cpp.o"
   "CMakeFiles/raytracer.dir/src/GlobalIllumination.cpp.o"
