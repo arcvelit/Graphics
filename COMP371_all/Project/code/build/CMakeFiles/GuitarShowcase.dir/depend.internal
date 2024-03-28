@@ -6,6 +6,7 @@ CMakeFiles/GuitarShowcase.dir/src/AssetsLoader.cpp.o
  /COMP371/Project/code/src/AssetsLoader.h
  /COMP371/Project/code/src/ObjectFileParser.h
  /COMP371/Project/code/src/Types.h
+ /COMP371/Project/code/src/json.hpp
 CMakeFiles/GuitarShowcase.dir/src/GLUtils.cpp.o
  /COMP371/Project/code/src/AssetsLoader.h
  /COMP371/Project/code/src/GLUtils.cpp

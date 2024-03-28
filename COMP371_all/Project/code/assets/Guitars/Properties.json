@@ -1,0 +1,127 @@
+{
+    "Accoustic Guitar":
+    {
+        "Body": {},
+        "Bridge": {},
+        "BridgePins": {},
+        "NeckHead": {},
+        "Strings": {},
+        "TuningPegs": {}
+
+    },
+    "Gibson ES-335":
+    {
+        "Body": {},
+        "Knobs": {},
+        "Nut": {},
+        "TuningPegs": {},
+        "Strings": {},
+        "GibsonLogo": {"tell": false},
+        "PickGuard": {},
+        "SwitchPlate": {"tell": false},
+        "PickupSwitch": {},
+        "JackInput": {},
+        "Frets": {},
+        "Fretboard": {"tell": false},
+        "NeckHead": {},
+        "Pickups": {},
+        "FretMarks": {},
+        "Misc": {"tell": false},
+        "Bridge": {}
+    },
+    "Gibson SG":
+    {
+        "Description": "",
+        "Backplate": {},
+        "Body": {
+            "name": "Body",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 10,
+            "ac": [0.2, 0, 0],
+            "dc": [0.5, 0, 0], 
+            "description": "Body style: SG\nBody material: Solid Mahogany\nBody finish: Nitrocellulose"
+        },
+        "Bridge": {
+            "name": "Bridge",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 20,
+            "ac": [0.1, 0.1, 0.1],
+            "dc": [0.8, 0.6, 0.5], 
+            "description": "Description: Tuning component\nFunction: Adjust height of strings"
+        },
+        "Frets": {
+            "name": "Frets",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 20,
+            "ac": [0.5, 0.5, 0.5],
+            "dc": [0.8, 0.6, 0.5], 
+            "description": "Fret count: 22\nFret format: Authentic Medium-Jumbo"
+        },
+        "GibsonLogo": {
+            "name": "Gibson Logo",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 20,
+            "ac": [0, 0.0, 0.0],
+            "dc": [0.1, 0.1, 0.1], 
+            "description": "Description: The Gibson trademark"
+        },
+        "JackInput": {
+            "name": "Jack output",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 20,
+            "ac": [0, 0.0, 0.0],
+            "dc": [0.1, 0.1, 0.1], 
+            "description": "Description: Outputs sound signals\nType: Jack\nFormat: Switchcraft"
+        },
+        "Knobs": {
+            "name": "Control Knobs",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 20,
+            "ac": [0.0, 0.0, 0.0],
+            "dc": [0.8, 0.6, 0.5], 
+            "description": "Description: Modify pickup qualities\nVolume knobs: 2\nTone knobs: 2"
+        },
+        "Neck": {
+            "name": "Neck",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 10,
+            "ac": [0.5, 0, 0],
+            "dc": [0.5, 0, 0], 
+            "description": "Profile: Traditional 1960s SlimTaper™ C\nStyle: Thin\nFingerboard radius: 304.8mm/12in\nFingerboard material: Indian Rosewood\nHeadstock: Classic Gibson"
+        },
+        "Nut": {},
+        "PickGuard": {},
+        "PickupSwitch": {},
+        "Pickups": {},
+        "Misc": {
+            "name": "Miscellaneous",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 20,
+            "ac": [0.1, 0.1, 0.1],
+            "dc": [0.8, 0.6, 0.5], 
+            "description": "Description: Screws to keep it sturdy"
+        },
+        "Strings": {},
+        "TuningPegs": {}
+    },
+    "Light":
+    {
+        "position": [0.0, -0.6, 0.0]
+    }
+}

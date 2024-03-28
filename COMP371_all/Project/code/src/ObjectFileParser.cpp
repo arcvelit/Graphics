@@ -13,10 +13,15 @@ bool parseOBJFile(const std::string& filePath, Entity& entity) {
         return false;
     }
 
+    std::vector<unsigned int> normal_indices;
+
     int model_index(-1);
 
     float max_height(0.0f);
     float min_height(0.0f);
+
+    std::vector<glm::vec3> positions;
+    std::vector<glm::vec3> normals;
 
 
     std::string line;
@@ -41,13 +46,9 @@ bool parseOBJFile(const std::string& filePath, Entity& entity) {
                 // Position data
                 if (line[1] == 'n') {
                     // Normal
-                    float normal_x;
-                    float normal_y;
-                    float normal_z;
-                    iss >> normal_x >> normal_y >> normal_z;
-                    //entity.normals.push_back(normal_x);
-                    //entity.normals.push_back(normal_y);
-                    //entity.normals.push_back(normal_z);
+                    glm::vec3 normal;
+                    iss >> normal.x >> normal.y >> normal.z;
+                    normals.push_back(normal);
 
                 } else if (line[1] == 't') {
                     // Texture coordinate
@@ -60,18 +61,12 @@ bool parseOBJFile(const std::string& filePath, Entity& entity) {
 
                 } else {
                     // Position
-                    float position_x;
-                    float position_y;
-                    float position_z;
+                    glm::vec3 position;
+                    iss >> position.x >> position.y >> position.z;
+                    positions.push_back(position);
 
-                    iss >> position_x >> position_y >> position_z;
-                    entity.positions.push_back(position_x);
-                    entity.positions.push_back(position_y);
-                    entity.positions.push_back(position_z);
-
-                    max_height = std::max(max_height, position_y);
-                    min_height = std::min(min_height, position_y);
-                    //centroid += glm::vec3(position_x, position_y, position_z);
+                    max_height = std::max(max_height, position.y);
+                    min_height = std::min(min_height, position.y);
                 }
             }
                 break;
@@ -90,38 +85,45 @@ bool parseOBJFile(const std::string& filePath, Entity& entity) {
                         if (!token.empty()) {
                             unsigned int index = std::stoi(token) - 1;
                             faceIndices.push_back(index);
-                            // ==================================================================
-                            break;// TO GET POSITION INDEX BUFFER ONLY
-                            // ==================================================================
                         }
                     }
 
                     verticesPerFace++;
                 }
 
+
+                if (verticesPerFace < 3) 
+                {
+                    std::cout << "Line segment encountered" << std::endl;
+                    exit(1);
+                }
+
                 // Triangulate the face if there are more than 3 vertices
-                if (verticesPerFace > 3) {
-                    for (size_t i = 1; i < verticesPerFace - 1; ++i) {
-                        entity.entity_parts[model_index].indices.push_back(faceIndices[0]);
-                        //model.indices.push_back(faceIndices[1]);
-                        //model.indices.push_back(faceIndices[2]);
+                std::vector<float> &vbo = entity.entity_parts[model_index].vertices;
+                for (size_t i = 1; i < verticesPerFace - 1; ++i) 
+                {
+                    glm::vec3 p1 = positions[faceIndices[0]]; 
+                    glm::vec3 n1 = normals[faceIndices[1]];
 
-                        entity.entity_parts[model_index].indices.push_back(faceIndices[i]);
-                        //model.indices.push_back(faceIndices[3*i+1]);
-                        //model.indices.push_back(faceIndices[3*i+2]);
+                    glm::vec3 p2 = positions[faceIndices[2*i]]; 
+                    glm::vec3 n2 = normals[faceIndices[2*i+1]];
 
-                        entity.entity_parts[model_index].indices.push_back(faceIndices[i+1]);
-                        //model.indices.push_back(faceIndices[3*(i+1)+1]);
-                        //model.indices.push_back(faceIndices[3*(i+1)+2]);
-                    }
-                } else {
-                    // Otherwise, just add the indices to the model
-                    for (unsigned int index : faceIndices) {
-                        entity.entity_parts[model_index].indices.push_back(index);
-                    }
+                    glm::vec3 p3 = positions[faceIndices[2*(i+1)]]; 
+                    glm::vec3 n3 = normals[faceIndices[2*(i+1)+1]];
+
+                    vbo.push_back(p1.x);vbo.push_back(p1.y);vbo.push_back(p1.z);
+                    vbo.push_back(n1.x);vbo.push_back(n1.y);vbo.push_back(n1.z);
+
+                    vbo.push_back(p2.x);vbo.push_back(p2.y);vbo.push_back(p2.z);
+                    vbo.push_back(n2.x);vbo.push_back(n2.y);vbo.push_back(n2.z);
+
+                    vbo.push_back(p3.x);vbo.push_back(p3.y);vbo.push_back(p3.z);
+                    vbo.push_back(n3.x);vbo.push_back(n3.y);vbo.push_back(n3.z);
 
                 }
+
                 entity.entity_parts[model_index].face_count += verticesPerFace - 2;
+                entity.entity_parts[model_index].number_of_vertices += 3 * (verticesPerFace - 2);
                 break;
             }
             default:
@@ -134,7 +136,7 @@ bool parseOBJFile(const std::string& filePath, Entity& entity) {
     //model.centroid = centroid;
     float mid_point = (max_height+min_height)/2;
     entity.middle = glm::vec3(0.0f, mid_point, 0.0f);
-
+    
 
     file.close();
 

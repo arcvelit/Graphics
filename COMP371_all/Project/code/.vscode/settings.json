@@ -64,6 +64,13 @@
         "xloctime": "cpp",
         "xtree": "cpp",
         "deque": "cpp",
-        "queue": "cpp"
+        "queue": "cpp",
+        "array": "cpp",
+        "codecvt": "cpp",
+        "functional": "cpp",
+        "numeric": "cpp",
+        "unordered_map": "cpp",
+        "valarray": "cpp",
+        "xhash": "cpp"
     }
 }

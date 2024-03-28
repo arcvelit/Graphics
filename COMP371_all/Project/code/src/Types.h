@@ -8,16 +8,26 @@
 struct Model 
 {
     std::string part_tag;
-    std::vector<unsigned int> indices;
+    std::string name;
+    std::vector<float> vertices;
     unsigned int VAO;
     unsigned int VBO;
-    unsigned int NBO;
-    //unsigned int TBO;
-    unsigned int IBO;
 
+    unsigned int number_of_vertices;
 
-    glm::vec3 colour;
     int face_count;
+
+    float ka;
+    float kd;
+    float ks;
+    float pc;
+
+    glm::vec3 ac;
+    glm::vec3 dc;
+
+    std::string description;
+
+    int picked;
 };
 
 struct Camera 
@@ -35,16 +45,21 @@ struct Camera
     float rotateSpeed;
 
     float modelAngle;
+
+    bool closeup;
 };
 
 struct Entity
 {
     std::vector<Model> entity_parts;
+    
     std::string name;
-
-    std::vector<float> positions;
-    std::vector<float> normals;
-    //std::vector<float> textCoords;
+    std::string description;
     
     glm::vec3 middle;
+};
+
+struct Light
+{
+    glm::vec3 position;
 };

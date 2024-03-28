@@ -5,6 +5,7 @@ CMakeFiles/GuitarShowcase.dir/src/AssetsLoader.cpp.o: ../src/AssetsLoader.cpp
 CMakeFiles/GuitarShowcase.dir/src/AssetsLoader.cpp.o: ../src/AssetsLoader.h
 CMakeFiles/GuitarShowcase.dir/src/AssetsLoader.cpp.o: ../src/ObjectFileParser.h
 CMakeFiles/GuitarShowcase.dir/src/AssetsLoader.cpp.o: ../src/Types.h
+CMakeFiles/GuitarShowcase.dir/src/AssetsLoader.cpp.o: ../src/json.hpp
 
 CMakeFiles/GuitarShowcase.dir/src/GLUtils.cpp.o: ../src/AssetsLoader.h
 CMakeFiles/GuitarShowcase.dir/src/GLUtils.cpp.o: ../src/GLUtils.cpp

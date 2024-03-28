@@ -3,11 +3,12 @@
 #include "AssetsLoader.h"
 #include "Types.h"
 
-
 #define GLEW_STATIC 1   // This allows linking with Static Library on Windows, without DLL
 
 #include <iostream>
 #include <string>
+
+
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h> 
@@ -15,6 +16,9 @@
 
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "glm/ext.hpp" 
+
+
 
 #include <vector>
 #include <chrono>
@@ -22,7 +26,6 @@
 
 #define SCREEN_WIDTH   1000
 #define SCREEN_HEIGHT  600
-
 
 int main() 
 {
@@ -34,69 +37,131 @@ int main()
         std::cout << "OBJ files not found" << std::endl;
         exit(1);
     }
+    // Translate entities to center of gravity
+    modelutils_CenterEntitiesToMiddle(entities);
 
-    // Filming and stuff probably
+    // Let there be light
+    Light light;
+
+    // Tell them how they look
+    loadAssetProperties("../assets/Guitars/Properties.json", light, entities);
+
+    // Camera setup
     Camera camera;
-    camera.aspectRatio  = (float) SCREEN_WIDTH / SCREEN_HEIGHT;
-    camera.nearPlane    = 0.1f;
-    camera.farPlane     = 100.0f;
-    camera.fov          = 45.0f;
-    camera.moveSpeed    = 0.1f;
-    camera.rotateSpeed  = 0.7f;
-    camera.modelAngle   = 0.0;
+    {
+        camera.aspectRatio  = (float) SCREEN_WIDTH / SCREEN_HEIGHT;
+        camera.nearPlane    = 0.1f;
+        camera.farPlane     = 100.0f;
+        camera.fov          = 45.0f;
+        camera.moveSpeed    = 0.05f;
+        camera.rotateSpeed  = 0.15f;
+        camera.modelAngle   = 0.0f;
+    }
 
     modelutils_SetCameraToStarting(camera);
-    
+
     // Init everything and stuff and yeah mhmh
     GLFWwindow* window = glutils_InitGL(SCREEN_WIDTH, SCREEN_HEIGHT);
     // Callbacks
     glfwSetWindowSizeCallback(window, glutils_ResizeWindowCallback);
     glfwSetWindowUserPointer(window, &camera);
 
+    // Entity shaders
+    const std::string vertex_shader_path = "../assets/Shaders/Vertex.glsl";
+    const std::string fragment_shader_path = "../assets/Shaders/Fragment.glsl";
+    unsigned int entityShaderProgram  = glutils_CompileAndLinkShaders(vertex_shader_path, fragment_shader_path);
 
-    // Compile everything
-    int shaderProgram  = glutils_CompileAndLinkShaders();
-
-    
     // Set GL Model buffers
     const size_t NUMBER_OF_ENTITIES(entities.size());
-    size_t activeEntityIndex(0);
-    Entity* entity = &entities[0];
-    std::cout << "Showing [" << entity->name << "]" << std::endl;
+    size_t activeEntityIndex(2);
+    size_t activeModelIndex(0);
+    bool selecting(false);
+    Entity* entity = &entities[activeEntityIndex];
+    Model* model;
 
-    // Avoid switching too fast
-    const int SWITCH_COOLDOWN_DURATION = 100; // Half a second
-    auto lastModelChangeTime = std::chrono::steady_clock::now();
+    // Avoid switching entities too fast
+    const int SWITCH_COOLDOWN_DURATION = 200;
+    auto lastEntityChangeTime = std::chrono::steady_clock::now();
+    auto lastModelChangeTime = lastEntityChangeTime;
+    auto lastViewChangeTime = lastEntityChangeTime;
 
-
+    // Init model buffers
     glutils_InitializeBuffers(entities);
 
-    // Background
     glClearColor(0.5f, 0.5f, 1.0f, 1.0f);
-    // Viewport frame
-    glViewport(0,0,SCREEN_WIDTH, SCREEN_HEIGHT);
+    glViewport(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT);
     
+    // GL Settings
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+    // Now showing!
+    modelutils_NowShowing(entity);
+
 
     while(!glfwWindowShouldClose(window))
     {
         // Specifics
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glEnable(GL_DEPTH_TEST);
 
         // Handle events
         glfwPollEvents();
 
-        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-            camera.position.y += camera.moveSpeed;
+        if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS) {
+            // Avoid loading each millisecond
+            auto currentTime = std::chrono::steady_clock::now();
+            auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastEntityChangeTime).count();
+            
+            if (elapsedTime > SWITCH_COOLDOWN_DURATION)
+            {
+                // Change entity
+                if (selecting) model->picked = 0;
+                activeEntityIndex = (activeEntityIndex + 1) % NUMBER_OF_ENTITIES;
+                selecting = false;
+                entity = &entities[activeEntityIndex]; 
+                lastEntityChangeTime = currentTime;
+
+                // Clean up camera
+                modelutils_SetCameraToStarting(camera);
+
+                modelutils_NowShowing(entity);
+            }
         }
-        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-            camera.position.y -= camera.moveSpeed;
+        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
+            auto currentTime = std::chrono::steady_clock::now();
+            auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastModelChangeTime).count();
+            
+            if (elapsedTime > SWITCH_COOLDOWN_DURATION)
+            {
+                if (!selecting)
+                {
+                    selecting = true;
+                    activeModelIndex = 0;
+                    model = &entity->entity_parts[activeModelIndex];
+                    model->picked = 1;
+                } 
+                else 
+                {
+                    model->picked = 0;
+                    activeModelIndex = (activeModelIndex + 1) % entity->entity_parts.size();
+                    model = &entity->entity_parts[activeModelIndex];
+                    model->picked = 1;
+                }
+                std::cout << model->name << "\n";
+                std::cout << model->description <<"\n"<< std::endl;
+                lastModelChangeTime = currentTime;
+            }
         }
-        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-            camera.position.x -= camera.moveSpeed;
-        }
-        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-            camera.position.x += camera.moveSpeed;
+        if (camera.closeup) {
+            if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+                camera.position.y += camera.moveSpeed;
+                camera.position.y = (camera.position.y > 0.4f) ? 0.4 : camera.position.y;
+            }
+            if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+                camera.position.y -= camera.moveSpeed;
+                camera.position.y = (camera.position.y < -0.4f) ? -0.4 : camera.position.y;
+            }
         }
         if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
             camera.modelAngle -= camera.rotateSpeed;
@@ -104,42 +169,62 @@ int main()
         if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
             camera.modelAngle += camera.rotateSpeed;
         }
-        if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS) {
-            // Avoid loading each millisecond
+        if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
+            modelutils_SetCameraToStarting(camera);
+        }
+        if (glfwGetKey(window, GLFW_KEY_M) == GLFW_PRESS) {
+
             auto currentTime = std::chrono::steady_clock::now();
-            auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastModelChangeTime).count();
-            
+            auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastViewChangeTime).count();
+
             if (elapsedTime > SWITCH_COOLDOWN_DURATION)
             {
-                // Change model
-                activeEntityIndex = (activeEntityIndex + 1) % NUMBER_OF_ENTITIES;
-                entity = &entities[activeEntityIndex];
-                std::cout << "Showing [" << entity->name << "]" << std::endl;
-                lastModelChangeTime = currentTime;
-
-                // Clean up camera
-                modelutils_SetCameraToStarting(camera);
+                if (camera.closeup) modelutils_SetCameraToZoomOut(camera);
+                else modelutils_SetCameraToCloseUp(camera);
+                lastViewChangeTime = currentTime;
             }
         }
-
+        if (glfwGetKey(window, GLFW_KEY_DOWN ) == GLFW_PRESS)
+        {
+            light.position.y -= 0.1;
+            std::cout << light.position.y << std::endl;
+        }
+        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
+        {
+            light.position.y += 0.1;
+            std::cout << light.position.y << std::endl;
+        }
+        
         // Update camera view
         modelutils_UpdateCameraLookat(camera);
+        
+        // Camera and light uniforms
+        glutils_SendCameraUniforms(entityShaderProgram, camera);
+        glutils_SendLightUniforms(entityShaderProgram, light);
+        
 
-        // Shaders
-        glUseProgram(shaderProgram);
+
+        // ENTITY DRAWING =================================================
+        glUseProgram(entityShaderProgram);
         
         // ModelViewProjection is passed to the vertex shader
-        glm::mat4 ModelViewProjection = 
-        glm::perspective(glm::radians(camera.fov), camera.aspectRatio, camera.nearPlane, camera.farPlane) *
-        glm::lookAt(camera.position, camera.center, camera.up) *
-        glm::translate(glm::mat4(1.0f), -entity->middle) * 
-        glm::rotate(glm::mat4(1.0f), camera.modelAngle, glm::vec3(0.0f, 1.0f, 0.0f));
+        glm::mat4 ProjectionT = glm::perspective(glm::radians(camera.fov), camera.aspectRatio, camera.nearPlane, camera.farPlane);
+        
+        glm::mat4 ModelT = glm::rotate(glm::mat4(1.0f), camera.modelAngle, glm::vec3(0.0f, 1.0f, 0.0f));
 
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram, "MVP"), 1, GL_FALSE, glm::value_ptr(ModelViewProjection));
+        glm::mat4 ViewT = glm::lookAt(camera.position, camera.center, camera.up);
+
+        glm::mat4 ModelViewT = ViewT * ModelT;
+        glm::mat4 ModelViewProjectionT = ProjectionT * ModelViewT;
+
+        glUniformMatrix4fv(glGetUniformLocation(entityShaderProgram, "ModelViewProjection"), 1, GL_FALSE, glm::value_ptr(ModelViewProjectionT));
+        //glUniformMatrix4fv(glGetUniformLocation(entityShaderProgram, "ModelView"), 1, GL_FALSE, glm::value_ptr(ModelViewT));
+        //glUniformMatrix4fv(glGetUniformLocation(entityShaderProgram, "View"), 1, GL_FALSE, glm::value_ptr(ViewT));
+        glUniformMatrix4fv(glGetUniformLocation(entityShaderProgram, "Model"), 1, GL_FALSE, glm::value_ptr(ModelT));
 
 
-        glutils_RenderEntity(entity);
-
+        glutils_RenderEntity(entity, entityShaderProgram);
+        // ================================================================
 
         glfwSwapBuffers(window);        
     }
