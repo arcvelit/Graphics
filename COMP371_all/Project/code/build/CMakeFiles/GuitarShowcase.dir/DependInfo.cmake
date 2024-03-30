@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/COMP371/Project/code/src/AssetsLoader.cpp" "/COMP371/Project/code/build/CMakeFiles/GuitarShowcase.dir/src/AssetsLoader.cpp.o"
   "/COMP371/Project/code/src/GLUtils.cpp" "/COMP371/Project/code/build/CMakeFiles/GuitarShowcase.dir/src/GLUtils.cpp.o"
+  "/COMP371/Project/code/src/GUIUtils.cpp" "/COMP371/Project/code/build/CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.o"
   "/COMP371/Project/code/src/ModelUtils.cpp" "/COMP371/Project/code/build/CMakeFiles/GuitarShowcase.dir/src/ModelUtils.cpp.o"
   "/COMP371/Project/code/src/ObjectFileParser.cpp" "/COMP371/Project/code/build/CMakeFiles/GuitarShowcase.dir/src/ObjectFileParser.cpp.o"
   "/COMP371/Project/code/src/main.cpp" "/COMP371/Project/code/build/CMakeFiles/GuitarShowcase.dir/src/main.cpp.o"

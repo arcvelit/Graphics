@@ -74,12 +74,12 @@ clean: CMakeFiles/GuitarShowcase.dir/clean
 CMakeFiles/GuitarShowcase.dir/all:
 	$(MAKE) -f CMakeFiles/GuitarShowcase.dir/build.make CMakeFiles/GuitarShowcase.dir/depend
 	$(MAKE) -f CMakeFiles/GuitarShowcase.dir/build.make CMakeFiles/GuitarShowcase.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/COMP371/Project/code/build/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target GuitarShowcase"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/COMP371/Project/code/build/CMakeFiles --progress-num=1,2,3,4,5,6,7 "Built target GuitarShowcase"
 .PHONY : CMakeFiles/GuitarShowcase.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/GuitarShowcase.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /COMP371/Project/code/build/CMakeFiles 6
+	$(CMAKE_COMMAND) -E cmake_progress_start /COMP371/Project/code/build/CMakeFiles 7
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/GuitarShowcase.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /COMP371/Project/code/build/CMakeFiles 0
 .PHONY : CMakeFiles/GuitarShowcase.dir/rule

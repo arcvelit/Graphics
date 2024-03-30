@@ -1,6 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/GuitarShowcase.dir/src/AssetsLoader.cpp.o"
   "CMakeFiles/GuitarShowcase.dir/src/GLUtils.cpp.o"
+  "CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.o"
   "CMakeFiles/GuitarShowcase.dir/src/ModelUtils.cpp.o"
   "CMakeFiles/GuitarShowcase.dir/src/ObjectFileParser.cpp.o"
   "CMakeFiles/GuitarShowcase.dir/src/main.cpp.o"

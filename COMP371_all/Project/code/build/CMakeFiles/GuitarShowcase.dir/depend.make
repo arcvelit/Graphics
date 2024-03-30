@@ -12,6 +12,10 @@ CMakeFiles/GuitarShowcase.dir/src/GLUtils.cpp.o: ../src/GLUtils.cpp
 CMakeFiles/GuitarShowcase.dir/src/GLUtils.cpp.o: ../src/GLUtils.h
 CMakeFiles/GuitarShowcase.dir/src/GLUtils.cpp.o: ../src/Types.h
 
+CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.o: ../src/GUIUtils.cpp
+CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.o: ../src/GUIUtils.h
+CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.o: ../src/Types.h
+
 CMakeFiles/GuitarShowcase.dir/src/ModelUtils.cpp.o: ../src/ModelUtils.cpp
 CMakeFiles/GuitarShowcase.dir/src/ModelUtils.cpp.o: ../src/ModelUtils.h
 CMakeFiles/GuitarShowcase.dir/src/ModelUtils.cpp.o: ../src/Types.h
@@ -22,6 +26,7 @@ CMakeFiles/GuitarShowcase.dir/src/ObjectFileParser.cpp.o: ../src/Types.h
 
 CMakeFiles/GuitarShowcase.dir/src/main.cpp.o: ../src/AssetsLoader.h
 CMakeFiles/GuitarShowcase.dir/src/main.cpp.o: ../src/GLUtils.h
+CMakeFiles/GuitarShowcase.dir/src/main.cpp.o: ../src/GUIUtils.h
 CMakeFiles/GuitarShowcase.dir/src/main.cpp.o: ../src/ModelUtils.h
 CMakeFiles/GuitarShowcase.dir/src/main.cpp.o: ../src/Types.h
 CMakeFiles/GuitarShowcase.dir/src/main.cpp.o: ../src/main.cpp

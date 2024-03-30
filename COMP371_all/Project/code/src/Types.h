@@ -28,6 +28,7 @@ struct Model
     std::string description;
 
     int picked;
+    uint8_t selection_code;
 };
 
 struct Camera 
@@ -46,6 +47,9 @@ struct Camera
 
     float modelAngle;
 
+    int screen_width;
+    int screen_height;
+
     bool closeup;
 };
 
@@ -57,6 +61,7 @@ struct Entity
     std::string description;
     
     glm::vec3 middle;
+
 };
 
 struct Light

@@ -132,7 +132,6 @@ void glutils_InitializeBuffers(std::vector<Entity>& entities)
 void glutils_RenderModel(Model* model)
 {
     glBindVertexArray(model->VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, model->VBO);
     glDrawArrays(GL_TRIANGLES, 0, model->number_of_vertices);
     glBindVertexArray(0);
 }
@@ -149,6 +148,8 @@ void glutils_RenderEntity(Entity* entity, unsigned int shader)
 void glutils_ResizeWindowCallback(GLFWwindow* window, int x, int y)
 {
     Camera* camera = static_cast<Camera*>(glfwGetWindowUserPointer(window));
+    camera->screen_width = x;
+    camera->screen_height = y;
     camera->aspectRatio = (float) x / y;
     glViewport(0, 0, x, y);
 }
@@ -176,4 +177,19 @@ void glutils_SendModelUniforms(unsigned int entityShaderProgram, Model &model)
 
     glUniform1i(glGetUniformLocation(entityShaderProgram, "picked"), model.picked);
 
+    glUniform1i(glGetUniformLocation(entityShaderProgram, "selection_code"), model.selection_code);
+}
+
+int glutils_FindSelectedModel(std::vector<Model> &entity_parts, unsigned char* fragment)
+{
+    if (fragment[0] == fragment[1] && fragment[1] == fragment[2])
+    for (int i = 0; i < entity_parts.size(); i++)
+    {
+        if (entity_parts[i].selection_code == fragment[0])
+        {
+            return i;
+        }
+    }
+
+    return -1;
 }

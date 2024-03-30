@@ -83,9 +83,22 @@ CMakeFiles/GuitarShowcase.dir/src/GLUtils.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/GuitarShowcase.dir/src/GLUtils.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /COMP371/Project/code/src/GLUtils.cpp -o CMakeFiles/GuitarShowcase.dir/src/GLUtils.cpp.s
 
+CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.o: CMakeFiles/GuitarShowcase.dir/flags.make
+CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.o: ../src/GUIUtils.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/COMP371/Project/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.o -c /COMP371/Project/code/src/GUIUtils.cpp
+
+CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /COMP371/Project/code/src/GUIUtils.cpp > CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.i
+
+CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /COMP371/Project/code/src/GUIUtils.cpp -o CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.s
+
 CMakeFiles/GuitarShowcase.dir/src/ModelUtils.cpp.o: CMakeFiles/GuitarShowcase.dir/flags.make
 CMakeFiles/GuitarShowcase.dir/src/ModelUtils.cpp.o: ../src/ModelUtils.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/COMP371/Project/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/GuitarShowcase.dir/src/ModelUtils.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/COMP371/Project/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/GuitarShowcase.dir/src/ModelUtils.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GuitarShowcase.dir/src/ModelUtils.cpp.o -c /COMP371/Project/code/src/ModelUtils.cpp
 
 CMakeFiles/GuitarShowcase.dir/src/ModelUtils.cpp.i: cmake_force
@@ -98,7 +111,7 @@ CMakeFiles/GuitarShowcase.dir/src/ModelUtils.cpp.s: cmake_force
 
 CMakeFiles/GuitarShowcase.dir/src/ObjectFileParser.cpp.o: CMakeFiles/GuitarShowcase.dir/flags.make
 CMakeFiles/GuitarShowcase.dir/src/ObjectFileParser.cpp.o: ../src/ObjectFileParser.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/COMP371/Project/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/GuitarShowcase.dir/src/ObjectFileParser.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/COMP371/Project/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/GuitarShowcase.dir/src/ObjectFileParser.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GuitarShowcase.dir/src/ObjectFileParser.cpp.o -c /COMP371/Project/code/src/ObjectFileParser.cpp
 
 CMakeFiles/GuitarShowcase.dir/src/ObjectFileParser.cpp.i: cmake_force
@@ -111,7 +124,7 @@ CMakeFiles/GuitarShowcase.dir/src/ObjectFileParser.cpp.s: cmake_force
 
 CMakeFiles/GuitarShowcase.dir/src/main.cpp.o: CMakeFiles/GuitarShowcase.dir/flags.make
 CMakeFiles/GuitarShowcase.dir/src/main.cpp.o: ../src/main.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/COMP371/Project/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/GuitarShowcase.dir/src/main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/COMP371/Project/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/GuitarShowcase.dir/src/main.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/GuitarShowcase.dir/src/main.cpp.o -c /COMP371/Project/code/src/main.cpp
 
 CMakeFiles/GuitarShowcase.dir/src/main.cpp.i: cmake_force
@@ -126,6 +139,7 @@ CMakeFiles/GuitarShowcase.dir/src/main.cpp.s: cmake_force
 GuitarShowcase_OBJECTS = \
 "CMakeFiles/GuitarShowcase.dir/src/AssetsLoader.cpp.o" \
 "CMakeFiles/GuitarShowcase.dir/src/GLUtils.cpp.o" \
+"CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.o" \
 "CMakeFiles/GuitarShowcase.dir/src/ModelUtils.cpp.o" \
 "CMakeFiles/GuitarShowcase.dir/src/ObjectFileParser.cpp.o" \
 "CMakeFiles/GuitarShowcase.dir/src/main.cpp.o"
@@ -135,6 +149,7 @@ GuitarShowcase_EXTERNAL_OBJECTS =
 
 GuitarShowcase: CMakeFiles/GuitarShowcase.dir/src/AssetsLoader.cpp.o
 GuitarShowcase: CMakeFiles/GuitarShowcase.dir/src/GLUtils.cpp.o
+GuitarShowcase: CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.o
 GuitarShowcase: CMakeFiles/GuitarShowcase.dir/src/ModelUtils.cpp.o
 GuitarShowcase: CMakeFiles/GuitarShowcase.dir/src/ObjectFileParser.cpp.o
 GuitarShowcase: CMakeFiles/GuitarShowcase.dir/src/main.cpp.o
@@ -145,7 +160,7 @@ GuitarShowcase: /usr/lib/x86_64-linux-gnu/libglfw.so.3.3
 GuitarShowcase: /usr/lib/x86_64-linux-gnu/libGLX.so
 GuitarShowcase: /usr/lib/x86_64-linux-gnu/libOpenGL.so
 GuitarShowcase: CMakeFiles/GuitarShowcase.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/COMP371/Project/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable GuitarShowcase"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/COMP371/Project/code/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable GuitarShowcase"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/GuitarShowcase.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.

@@ -177,6 +177,33 @@ src/GLUtils.cpp.s:
 	$(MAKE) -f CMakeFiles/GuitarShowcase.dir/build.make CMakeFiles/GuitarShowcase.dir/src/GLUtils.cpp.s
 .PHONY : src/GLUtils.cpp.s
 
+src/GUIUtils.o: src/GUIUtils.cpp.o
+
+.PHONY : src/GUIUtils.o
+
+# target to build an object file
+src/GUIUtils.cpp.o:
+	$(MAKE) -f CMakeFiles/GuitarShowcase.dir/build.make CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.o
+.PHONY : src/GUIUtils.cpp.o
+
+src/GUIUtils.i: src/GUIUtils.cpp.i
+
+.PHONY : src/GUIUtils.i
+
+# target to preprocess a source file
+src/GUIUtils.cpp.i:
+	$(MAKE) -f CMakeFiles/GuitarShowcase.dir/build.make CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.i
+.PHONY : src/GUIUtils.cpp.i
+
+src/GUIUtils.s: src/GUIUtils.cpp.s
+
+.PHONY : src/GUIUtils.s
+
+# target to generate assembly for a file
+src/GUIUtils.cpp.s:
+	$(MAKE) -f CMakeFiles/GuitarShowcase.dir/build.make CMakeFiles/GuitarShowcase.dir/src/GUIUtils.cpp.s
+.PHONY : src/GUIUtils.cpp.s
+
 src/ModelUtils.o: src/ModelUtils.cpp.o
 
 .PHONY : src/ModelUtils.o
@@ -273,6 +300,9 @@ help:
 	@echo "... src/GLUtils.o"
 	@echo "... src/GLUtils.i"
 	@echo "... src/GLUtils.s"
+	@echo "... src/GUIUtils.o"
+	@echo "... src/GUIUtils.i"
+	@echo "... src/GUIUtils.s"
 	@echo "... src/ModelUtils.o"
 	@echo "... src/ModelUtils.i"
 	@echo "... src/ModelUtils.s"

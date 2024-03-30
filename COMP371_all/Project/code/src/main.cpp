@@ -1,4 +1,5 @@
 #include "GLUtils.h"
+#include "GUIUtils.h"
 #include "ModelUtils.h"
 #include "AssetsLoader.h"
 #include "Types.h"
@@ -56,20 +57,29 @@ int main()
         camera.moveSpeed    = 0.05f;
         camera.rotateSpeed  = 0.15f;
         camera.modelAngle   = 0.0f;
+        camera.screen_width = SCREEN_WIDTH;
+        camera.screen_height = SCREEN_HEIGHT;
     }
 
     modelutils_SetCameraToStarting(camera);
 
-    // Init everything and stuff and yeah mhmh
+    // Window :)
     GLFWwindow* window = glutils_InitGL(SCREEN_WIDTH, SCREEN_HEIGHT);
+
     // Callbacks
     glfwSetWindowSizeCallback(window, glutils_ResizeWindowCallback);
     glfwSetWindowUserPointer(window, &camera);
 
     // Entity shaders
-    const std::string vertex_shader_path = "../assets/Shaders/Vertex.glsl";
-    const std::string fragment_shader_path = "../assets/Shaders/Fragment.glsl";
-    unsigned int entityShaderProgram  = glutils_CompileAndLinkShaders(vertex_shader_path, fragment_shader_path);
+    const std::string vertex_shader_path = "../assets/Shaders/Phong.vertex.glsl";
+    const std::string fragment_shader_path = "../assets/Shaders/Phong.fragment.glsl";
+    unsigned int entityShaderProgram = glutils_CompileAndLinkShaders(vertex_shader_path, fragment_shader_path);
+
+    // Picking shaders
+    const std::string picking_vertex_path = "../assets/Shaders/Picking.vertex.glsl";
+    const std::string picking_fragment_path = "../assets/Shaders/Picking.fragment.glsl";
+    unsigned int pickingShaderProgram = glutils_CompileAndLinkShaders(picking_vertex_path, picking_fragment_path);
+
 
     // Set GL Model buffers
     const size_t NUMBER_OF_ENTITIES(entities.size());
@@ -77,7 +87,7 @@ int main()
     size_t activeModelIndex(0);
     bool selecting(false);
     Entity* entity = &entities[activeEntityIndex];
-    Model* model;
+    Model* model = nullptr;
 
     // Avoid switching entities too fast
     const int SWITCH_COOLDOWN_DURATION = 200;
@@ -98,7 +108,6 @@ int main()
 
     // Now showing!
     modelutils_NowShowing(entity);
-
 
     while(!glfwWindowShouldClose(window))
     {
@@ -148,8 +157,7 @@ int main()
                     model = &entity->entity_parts[activeModelIndex];
                     model->picked = 1;
                 }
-                std::cout << model->name << "\n";
-                std::cout << model->description <<"\n"<< std::endl;
+                guiutils_TellAboutModel(model);
                 lastModelChangeTime = currentTime;
             }
         }
@@ -184,47 +192,82 @@ int main()
                 lastViewChangeTime = currentTime;
             }
         }
-        if (glfwGetKey(window, GLFW_KEY_DOWN ) == GLFW_PRESS)
-        {
+        /*
+        if (glfwGetKey(window, GLFW_KEY_DOWN ) == GLFW_PRESS) {
             light.position.y -= 0.1;
             std::cout << light.position.y << std::endl;
         }
-        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS)
-        {
+        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
             light.position.y += 0.1;
             std::cout << light.position.y << std::endl;
         }
-        
+        */
+
         // Update camera view
         modelutils_UpdateCameraLookat(camera);
-        
-        // Camera and light uniforms
-        glutils_SendCameraUniforms(entityShaderProgram, camera);
-        glutils_SendLightUniforms(entityShaderProgram, light);
-        
 
 
         // ENTITY DRAWING =================================================
-        glUseProgram(entityShaderProgram);
         
-        // ModelViewProjection is passed to the vertex shader
+        // T Matrices are sent to the shaders
         glm::mat4 ProjectionT = glm::perspective(glm::radians(camera.fov), camera.aspectRatio, camera.nearPlane, camera.farPlane);
-        
-        glm::mat4 ModelT = glm::rotate(glm::mat4(1.0f), camera.modelAngle, glm::vec3(0.0f, 1.0f, 0.0f));
-
         glm::mat4 ViewT = glm::lookAt(camera.position, camera.center, camera.up);
+
+        glm::mat4 ModelT = glm::rotate(glm::mat4(1.0f), camera.modelAngle, glm::vec3(0.0f, 1.0f, 0.0f));
 
         glm::mat4 ModelViewT = ViewT * ModelT;
         glm::mat4 ModelViewProjectionT = ProjectionT * ModelViewT;
 
+        glUseProgram(pickingShaderProgram);
+        // Camera and light uniforms
+        glutils_SendCameraUniforms(pickingShaderProgram, camera);
+        glutils_SendLightUniforms(pickingShaderProgram, light);
+        glUniformMatrix4fv(glGetUniformLocation(pickingShaderProgram, "ModelViewProjection"), 1, GL_FALSE, glm::value_ptr(ModelViewProjectionT));
+
+        
+        glUseProgram(entityShaderProgram);
+        glutils_SendCameraUniforms(entityShaderProgram, camera);
+        glutils_SendLightUniforms(entityShaderProgram, light);
         glUniformMatrix4fv(glGetUniformLocation(entityShaderProgram, "ModelViewProjection"), 1, GL_FALSE, glm::value_ptr(ModelViewProjectionT));
         //glUniformMatrix4fv(glGetUniformLocation(entityShaderProgram, "ModelView"), 1, GL_FALSE, glm::value_ptr(ModelViewT));
         //glUniformMatrix4fv(glGetUniformLocation(entityShaderProgram, "View"), 1, GL_FALSE, glm::value_ptr(ViewT));
         glUniformMatrix4fv(glGetUniformLocation(entityShaderProgram, "Model"), 1, GL_FALSE, glm::value_ptr(ModelT));
 
 
-        glutils_RenderEntity(entity, entityShaderProgram);
         // ================================================================
+
+        // Get selected model 'just in time'
+        if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
+        {
+            double xpos, ypos;
+            glfwGetCursorPos(window, &xpos, &ypos);
+
+            glUseProgram(pickingShaderProgram);
+
+            glutils_RenderEntity(entity, pickingShaderProgram);
+
+            unsigned char pixelColor[4];
+            glReadPixels(xpos, camera.screen_height - ypos, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixelColor);
+
+            int model_index = glutils_FindSelectedModel(entity->entity_parts, pixelColor);
+            if (model_index != -1 && model_index != activeModelIndex)
+            {
+                if (model != nullptr)
+                    model->picked = 0;
+
+                model = &entity->entity_parts[model_index];
+                model->picked = 1;
+                activeModelIndex = model_index;
+
+                guiutils_TellAboutModel(model);
+            }
+
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        }
+
+        glUseProgram(entityShaderProgram);
+        glutils_RenderEntity(entity, entityShaderProgram);
 
         glfwSwapBuffers(window);        
     }

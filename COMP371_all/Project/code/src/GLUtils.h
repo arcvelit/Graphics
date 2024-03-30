@@ -16,4 +16,5 @@ void glutils_InitializeBuffers(std::vector<Entity>& entities);
 void glutils_SendLightUniforms(unsigned int entityShaderProgram, Light &light);
 void glutils_SendCameraUniforms(unsigned int entityShaderProgram, Camera &camera);
 void glutils_SendModelUniforms(unsigned int entityShaderProgram, Model &model);
+int glutils_FindSelectedModel(std::vector<Model> &entity_parts, unsigned char* fragment);
 void glutils_ResizeWindowCallback(GLFWwindow* window, int x, int y);

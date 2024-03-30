@@ -37,6 +37,9 @@ bool parseOBJFile(const std::string& filePath, Entity& entity) {
         {
             model_index++;
             Model model;
+            // For picking
+            // +1 to avoid 0 case, background framebuffer is black
+            model.selection_code = model_index + 1; 
             iss >> model.part_tag;
             entity.entity_parts.push_back(model);
         }
