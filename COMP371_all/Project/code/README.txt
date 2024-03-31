@@ -1,4 +1,4 @@
-
+Proceed inside the provided docker image
 
 Building:
 
@@ -7,4 +7,3 @@ Building:
 3) cmake ../
 4) make
 5) ./GuitarShowcase
-

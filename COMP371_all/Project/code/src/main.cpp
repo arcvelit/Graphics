@@ -1,5 +1,4 @@
 #include "GLUtils.h"
-#include "GUIUtils.h"
 #include "ModelUtils.h"
 #include "AssetsLoader.h"
 #include "Types.h"
@@ -9,7 +8,9 @@
 #include <iostream>
 #include <string>
 
-
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h> 
@@ -83,7 +84,7 @@ int main()
 
     // Set GL Model buffers
     const size_t NUMBER_OF_ENTITIES(entities.size());
-    size_t activeEntityIndex(2);
+    size_t activeEntityIndex(0);
     size_t activeModelIndex(0);
     bool selecting(false);
     Entity* entity = &entities[activeEntityIndex];
@@ -91,9 +92,8 @@ int main()
 
     // Avoid switching entities too fast
     const int SWITCH_COOLDOWN_DURATION = 200;
-    auto lastEntityChangeTime = std::chrono::steady_clock::now();
-    auto lastModelChangeTime = lastEntityChangeTime;
-    auto lastViewChangeTime = lastEntityChangeTime;
+    auto lastModelChangeTime = std::chrono::steady_clock::now();
+    auto lastViewChangeTime = std::chrono::steady_clock::now();
 
     // Init model buffers
     glutils_InitializeBuffers(entities);
@@ -106,61 +106,26 @@ int main()
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    // Now showing!
-    modelutils_NowShowing(entity);
+    IMGUI_CHECKVERSION();
+    ImGui::CreateContext();
+    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+
+    // Setup Dear ImGui style
+    ImGui::StyleColorsDark();
+
+    // Setup Platform/Renderer backends
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 130");
 
     while(!glfwWindowShouldClose(window))
     {
-        // Specifics
+        // Clearing screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         // Handle events
         glfwPollEvents();
 
-        if (glfwGetKey(window, GLFW_KEY_TAB) == GLFW_PRESS) {
-            // Avoid loading each millisecond
-            auto currentTime = std::chrono::steady_clock::now();
-            auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastEntityChangeTime).count();
-            
-            if (elapsedTime > SWITCH_COOLDOWN_DURATION)
-            {
-                // Change entity
-                if (selecting) model->picked = 0;
-                activeEntityIndex = (activeEntityIndex + 1) % NUMBER_OF_ENTITIES;
-                selecting = false;
-                entity = &entities[activeEntityIndex]; 
-                lastEntityChangeTime = currentTime;
-
-                // Clean up camera
-                modelutils_SetCameraToStarting(camera);
-
-                modelutils_NowShowing(entity);
-            }
-        }
-        if (glfwGetKey(window, GLFW_KEY_SPACE) == GLFW_PRESS) {
-            auto currentTime = std::chrono::steady_clock::now();
-            auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - lastModelChangeTime).count();
-            
-            if (elapsedTime > SWITCH_COOLDOWN_DURATION)
-            {
-                if (!selecting)
-                {
-                    selecting = true;
-                    activeModelIndex = 0;
-                    model = &entity->entity_parts[activeModelIndex];
-                    model->picked = 1;
-                } 
-                else 
-                {
-                    model->picked = 0;
-                    activeModelIndex = (activeModelIndex + 1) % entity->entity_parts.size();
-                    model = &entity->entity_parts[activeModelIndex];
-                    model->picked = 1;
-                }
-                guiutils_TellAboutModel(model);
-                lastModelChangeTime = currentTime;
-            }
-        }
         if (camera.closeup) {
             if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
                 camera.position.y += camera.moveSpeed;
@@ -191,6 +156,11 @@ int main()
                 else modelutils_SetCameraToCloseUp(camera);
                 lastViewChangeTime = currentTime;
             }
+        }
+        if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+            selecting = false;
+            model->picked = 0;
+            activeModelIndex = -1;
         }
         /*
         if (glfwGetKey(window, GLFW_KEY_DOWN ) == GLFW_PRESS) {
@@ -243,7 +213,6 @@ int main()
             glfwGetCursorPos(window, &xpos, &ypos);
 
             glUseProgram(pickingShaderProgram);
-
             glutils_RenderEntity(entity, pickingShaderProgram);
 
             unsigned char pixelColor[4];
@@ -254,12 +223,11 @@ int main()
             {
                 if (model != nullptr)
                     model->picked = 0;
-
+                
+                selecting = true;
                 model = &entity->entity_parts[model_index];
                 model->picked = 1;
                 activeModelIndex = model_index;
-
-                guiutils_TellAboutModel(model);
             }
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -269,11 +237,96 @@ int main()
         glUseProgram(entityShaderProgram);
         glutils_RenderEntity(entity, entityShaderProgram);
 
+        // GUI
+        {        
+            constexpr ImGuiWindowFlags imgui_default_flags = ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoMove;
+
+            const ImVec2 entity_box_size = ImVec2(260, 560);
+            const ImVec2 entity_box_pos = ImVec2(8, 10);
+
+            const ImVec2 model_box_size = ImVec2(entity_box_size.x, entity_box_size.y / 2);
+            const ImVec2 model_box_pos = ImVec2(camera.screen_width - model_box_size.x - entity_box_pos.x , entity_box_pos.y);
+
+
+            ImGui_ImplOpenGL3_NewFrame();
+            ImGui_ImplGlfw_NewFrame();
+            ImGui::NewFrame();
+
+            // Conditional parameters
+            int entity_change(0);
+            int model_change(0);
+
+            // START - Entity box
+            ImGui::Begin(entity->name.c_str(), nullptr, imgui_default_flags);
+            ImGui::SetWindowPos(entity_box_pos);
+            ImGui::SetWindowSize(entity_box_size);
+            ImGui::TextWrapped("%s", entity->description.c_str());
+
+            ImGui::SetCursorPosY(entity_box_size.y - 2 * ImGui::GetTextLineHeightWithSpacing());
+            if (ImGui::Button("< Back")) { entity_change = -1; } 
+
+            ImGui::SameLine();
+            ImGui::SetCursorPosX(ImGui::GetWindowSize().x - 2 * ImGui::GetStyle().ItemSpacing.x - ImGui::CalcTextSize("Next >").x);
+            if (ImGui::Button("Next >")) { entity_change = 1; }
+
+            // END - Entity box
+            ImGui::End();
+
+            if(selecting && model != nullptr)
+            {
+                // START - Model box
+                ImGui::Begin(model->name.c_str(), nullptr, imgui_default_flags);
+                ImGui::TextWrapped("%s", model->description.c_str());
+                ImGui::SetWindowPos(model_box_pos);
+                ImGui::SetWindowSize(model_box_size);
+
+                ImGui::SetCursorPosY(model_box_size.y - 2 * ImGui::GetTextLineHeightWithSpacing());
+                if (ImGui::Button("< Back")) { model_change = -1; } 
+
+                ImGui::SameLine();
+                ImGui::SetCursorPosX(ImGui::GetWindowSize().x - 2 * ImGui::GetStyle().ItemSpacing.x - ImGui::CalcTextSize("Next >").x);
+                if (ImGui::Button("Next >")) { model_change = 1; }
+
+                // END - Model box
+                ImGui::End();
+            }
+
+
+            if (entity_change != 0)
+            {
+                // Change entity
+                if (selecting) model->picked = 0;
+                activeEntityIndex = (activeEntityIndex + NUMBER_OF_ENTITIES + entity_change) % NUMBER_OF_ENTITIES;
+                selecting = false;
+                entity = &entities[activeEntityIndex]; 
+
+                // Replace camera
+                modelutils_SetCameraToStarting(camera);
+            }
+            if (model_change != 0)
+            { 
+                model->picked = 0;
+                const size_t NUMBER_OF_MODELS = entity->entity_parts.size(); 
+                activeModelIndex = (activeModelIndex + NUMBER_OF_MODELS + model_change) % NUMBER_OF_MODELS;
+                model = &entity->entity_parts[activeModelIndex];
+                model->picked = 1;
+            }
+
+        }
+
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         glfwSwapBuffers(window);        
     }
 
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
+
+    glfwDestroyWindow(window);
     glfwTerminate();
-    
+
     return 0;
     
 }

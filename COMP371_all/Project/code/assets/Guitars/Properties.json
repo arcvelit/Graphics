@@ -29,9 +29,9 @@
         "Misc": {"tell": false},
         "Bridge": {}
     },
-    "Gibson SG":
+    "Gibson SG Standard":
     {
-        "Description": "",
+        "Description": "This is a \npretty guitor :)",
         "Backplate": {},
         "Body": {
             "name": "Body",

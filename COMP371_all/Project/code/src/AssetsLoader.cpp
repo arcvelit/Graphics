@@ -61,6 +61,7 @@ void loadAssetProperties(const char* json_file_path, Light &light, std::vector<E
         // matching entity.name
         auto guitar = props[entity.name];
         if (guitar.contains("Description")) entity.description = guitar["Description"];
+        else entity.description = "???";
 
         for(Model &model : entity.entity_parts)
         {
@@ -69,11 +70,13 @@ void loadAssetProperties(const char* json_file_path, Light &light, std::vector<E
             auto part = guitar[model.part_tag];
 
             if (part.contains("name")) model.name = part["name"];
+            else model.name = "???";
             if (part.contains("ka")) model.ka = part["ka"];
             if (part.contains("kd")) model.kd = part["kd"];
             if (part.contains("ks")) model.ks = part["ks"];
             if (part.contains("pc")) model.pc = part["pc"];
             if (part.contains("description")) model.description = part["description"];
+            else model.description = "???";
             if (part.contains("ac")) model.ac = glm::vec3(part["ac"][0], part["ac"][1], part["ac"][2]);
             if (part.contains("dc")) model.dc = glm::vec3(part["dc"][0], part["dc"][1], part["dc"][2]);
         }
