@@ -65,8 +65,8 @@ namespace TAPP {
         }
         
         // Initialize Shader
-        string vsh1 = global_path + "TextVertexShader.vertexshader";
-        string fsh1 = global_path + "TextVertexShader.fragmentshader";
+        string vsh1 = global_path + "TextVertexShader.vertexshader.glsl";
+        string fsh1 = global_path + "TextVertexShader.fragmentshader.glsl";
         
         Text2DShaderID = LoadShaders( vsh1.c_str(), fsh1.c_str());
         

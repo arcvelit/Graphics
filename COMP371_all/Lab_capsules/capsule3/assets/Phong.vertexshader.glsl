@@ -23,7 +23,7 @@ void main(){
 	
 	// Position of the vertex, in worldspace : M * position
 	Position_worldspace = (vec4(vertexPosition_modelspace,1)).xyz;
-	
+	distance = length(Position_worldspace - LightPosition_worldspace); 
 	// Vector that goes from the vertex to the camera, in camera space.
 	// In camera space, the camera is at the origin (0,0,0).
 	vec3 vertexPosition_cameraspace = ( V * vec4(vertexPosition_modelspace,1)).xyz;

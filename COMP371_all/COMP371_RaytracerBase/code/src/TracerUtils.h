@@ -17,6 +17,5 @@ PairedRoot tu_IntersectSceneGeometries(Ray& ray, SceneInfo& scene);
 Eigen::Matrix3f tu_GetLocalCoordinatesFrame(Vec3 &normal, Vec3 &V);
 bool tu_PointInShadow(Point &light_center, PairedRoot &eclipse, PairedRoot &hit, Point &p);
 Vec3 tu_GetNormal(Point &p, const Geometry *geometry);
-void tu_GammaCorrection(Color &color);
 
 #endif

@@ -260,7 +260,7 @@ GLuint LoadShaders(const char * vertex_file_path,const char * fragment_file_path
         FILE *fp;
         
         /* try to open the file */
-        fp = fopen(imagepath, "rb");
+        fp = fopen(imagepath, "r");
         if (fp == NULL){
             printf("%s could not be opened. Are you in the right directory ? Don't forget to read the FAQ !\n", imagepath); getchar();
             return 0;

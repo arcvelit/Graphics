@@ -77,12 +77,6 @@ Vec3 tu_GetNormal(Point &p, const Geometry* geometry)
     return geometry->normal;
 }
 
-void tu_GammaCorrection(Color &color)
-{
-    const float GAMMA = 2.2;
-    color = color.array().pow(1/GAMMA); 
-}
-
 bool tu_PointInShadow(Point &light_center, PairedRoot &eclipse, PairedRoot &hit, Point &p)
 {
     return (eclipse.geometry != nullptr && eclipse.geometry != hit.geometry) && ((light_center - p).squaredNorm() > eclipse.root * eclipse.root);

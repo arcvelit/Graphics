@@ -3,7 +3,7 @@
 #include "AssetsLoader.h"
 #include "Types.h"
 
-#define GLEW_STATIC 1   // This allows linking with Static Library on Windows, without DLL
+#define GLEW_STATIC 1
 
 #include <iostream>
 #include <string>

@@ -10,7 +10,7 @@
 using namespace TAPP;
 using namespace std;
 
-std::string global_path;
+std::string global_path = "C:/Users/louka/source/repos/COMP371_dockerimage/COMP371_all/Lab_capsules/capsule3/assets/";
 
 int main(int argc, char* argv[]){
 
@@ -39,16 +39,14 @@ int main(int argc, char* argv[]){
     
     view->m_objects.push_back(sp);
     
-   
-/*
+
     Text* text = new Text();
     text->m_text = "Hello World!";
     text->m_x = 300;
     text->m_y = 300;
     text->m_size = 60;
-    view->m_objects.push_back(text);
- */   
- 
+    view->m_objects.push_back(text); 
+
     gapp.run();
     
     gapp.release();
