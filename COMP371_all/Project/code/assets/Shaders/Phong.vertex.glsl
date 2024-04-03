@@ -13,8 +13,7 @@ void main()
 {
     gl_Position = ModelViewProjection * vec4(VertexPosition_modelspace, 1.0);
 
-    VertexNormal_worldspace = normalize(transpose(inverse(mat3(Model))) * VertexNormal_modelspace);
-    
+    VertexNormal_worldspace = transpose(inverse(mat3(Model))) * VertexNormal_modelspace;
     FragmentPosition_worldspace = mat3(Model) * VertexPosition_modelspace;
 }
 

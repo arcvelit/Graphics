@@ -42,11 +42,9 @@ int main()
     // Translate entities to center of gravity
     modelutils_CenterEntitiesToMiddle(entities);
 
-    // Let there be light
-    Light light;
 
     // Tell them how they look
-    loadAssetProperties("../assets/Guitars/Properties.json", light, entities);
+    loadAssetProperties("../assets/Guitars/Properties.json", entities);
 
     // Camera setup
     Camera camera;
@@ -55,12 +53,16 @@ int main()
         camera.nearPlane    = 0.1f;
         camera.farPlane     = 100.0f;
         camera.fov          = 45.0f;
-        camera.moveSpeed    = 0.05f;
-        camera.rotateSpeed  = 0.15f;
+        camera.moveSpeed    = 0.3f;
+        camera.rotateSpeed  = 1.0f;
         camera.modelAngle   = 0.0f;
         camera.screen_width = SCREEN_WIDTH;
         camera.screen_height = SCREEN_HEIGHT;
     }
+
+    // Let there be light
+    Light light;
+    light.position = glm::vec3(0.0,0.0, -1.5);
 
     modelutils_SetCameraToStarting(camera);
 
@@ -103,12 +105,15 @@ int main()
     
     // GL Settings
     glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+    glCullFace(GL_FRONT);  
+    glCullFace(GL_BACK);
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     IMGUI_CHECKVERSION();
     ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
+    ImGuiIO& io = ImGui::GetIO();
     io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 
     // Setup Dear ImGui style
@@ -118,8 +123,17 @@ int main()
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 130");
 
+
+    float delta_time = 0.0f;
+    float last_frame = 0.0f;
+
     while(!glfwWindowShouldClose(window))
     {
+        // Deltas
+        float current_time = glfwGetTime();
+        delta_time = current_time - last_frame;
+        last_frame = current_time;
+
         // Clearing screen
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -128,19 +142,19 @@ int main()
 
         if (camera.closeup) {
             if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-                camera.position.y += camera.moveSpeed;
+                camera.position.y += delta_time*camera.moveSpeed;
                 camera.position.y = (camera.position.y > 0.4f) ? 0.4 : camera.position.y;
             }
             if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-                camera.position.y -= camera.moveSpeed;
+                camera.position.y -= delta_time*camera.moveSpeed;
                 camera.position.y = (camera.position.y < -0.4f) ? -0.4 : camera.position.y;
             }
         }
         if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-            camera.modelAngle -= camera.rotateSpeed;
+            camera.modelAngle -= delta_time*camera.rotateSpeed;
         }
         if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-            camera.modelAngle += camera.rotateSpeed;
+            camera.modelAngle += delta_time*camera.rotateSpeed;
         }
         if (glfwGetKey(window, GLFW_KEY_R) == GLFW_PRESS) {
             modelutils_SetCameraToStarting(camera);
@@ -159,22 +173,18 @@ int main()
         }
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
             selecting = false;
-            model->picked = 0;
+            if (model != nullptr)
+                model->picked = 0;
             activeModelIndex = -1;
         }
-        /*
-        if (glfwGetKey(window, GLFW_KEY_DOWN ) == GLFW_PRESS) {
-            light.position.y -= 0.1;
-            std::cout << light.position.y << std::endl;
+        if (glfwGetKey(window, GLFW_KEY_C) == GLFW_PRESS)
+        {
+            loadAssetProperties("../assets/Guitars/Properties.json", entities);
         }
-        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-            light.position.y += 0.1;
-            std::cout << light.position.y << std::endl;
-        }
-        */
 
-        // Update camera view
+        // Update view
         modelutils_UpdateCameraLookat(camera);
+        //light.position = camera.position;
 
 
         // ENTITY DRAWING =================================================
@@ -184,17 +194,17 @@ int main()
         glm::mat4 ViewT = glm::lookAt(camera.position, camera.center, camera.up);
 
         glm::mat4 ModelT = glm::rotate(glm::mat4(1.0f), camera.modelAngle, glm::vec3(0.0f, 1.0f, 0.0f));
+        //glm::scale(glm::mat4(1.0f), 2 * glm::vec3(1.0f, 1.0f, 1.0f));
 
         glm::mat4 ModelViewT = ViewT * ModelT;
         glm::mat4 ModelViewProjectionT = ProjectionT * ModelViewT;
 
-        glUseProgram(pickingShaderProgram);
         // Camera and light uniforms
+        glUseProgram(pickingShaderProgram);
         glutils_SendCameraUniforms(pickingShaderProgram, camera);
         glutils_SendLightUniforms(pickingShaderProgram, light);
         glUniformMatrix4fv(glGetUniformLocation(pickingShaderProgram, "ModelViewProjection"), 1, GL_FALSE, glm::value_ptr(ModelViewProjectionT));
 
-        
         glUseProgram(entityShaderProgram);
         glutils_SendCameraUniforms(entityShaderProgram, camera);
         glutils_SendLightUniforms(entityShaderProgram, light);
@@ -219,7 +229,7 @@ int main()
             glReadPixels(xpos, camera.screen_height - ypos, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixelColor);
 
             int model_index = glutils_FindSelectedModel(entity->entity_parts, pixelColor);
-            if (model_index != -1 && model_index != activeModelIndex)
+            if (model_index != -1)
             {
                 if (model != nullptr)
                     model->picked = 0;
@@ -295,7 +305,7 @@ int main()
             if (entity_change != 0)
             {
                 // Change entity
-                if (selecting) model->picked = 0;
+                if (selecting && model != nullptr) model->picked = 0;
                 activeEntityIndex = (activeEntityIndex + NUMBER_OF_ENTITIES + entity_change) % NUMBER_OF_ENTITIES;
                 selecting = false;
                 entity = &entities[activeEntityIndex]; 
@@ -305,7 +315,7 @@ int main()
             }
             if (model_change != 0)
             { 
-                model->picked = 0;
+                if (model != nullptr) model->picked = 0;
                 const size_t NUMBER_OF_MODELS = entity->entity_parts.size(); 
                 activeModelIndex = (activeModelIndex + NUMBER_OF_MODELS + model_change) % NUMBER_OF_MODELS;
                 model = &entity->entity_parts[activeModelIndex];

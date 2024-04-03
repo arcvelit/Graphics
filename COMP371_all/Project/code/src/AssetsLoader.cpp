@@ -37,7 +37,7 @@ void loadProjectModels(const std::string& directory_path, std::vector<Entity> &e
     }
 }
 
-void loadAssetProperties(const char* json_file_path, Light &light, std::vector<Entity> &entity_array)
+void loadAssetProperties(const char* json_file_path, std::vector<Entity> &entity_array)
 {    
     std::ifstream t(json_file_path);
     if(!t)
@@ -50,10 +50,6 @@ void loadAssetProperties(const char* json_file_path, Light &light, std::vector<E
     buffer << t.rdbuf();
         
     nlohmann::json props = nlohmann::json::parse(buffer.str());
-
-    auto lightbulb = props["Light"];
-
-    light.position = glm::vec3(lightbulb["position"][0], lightbulb["position"][1], lightbulb["position"][2]);
 
     for(Entity &entity : entity_array)
     {

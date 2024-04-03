@@ -28,10 +28,10 @@ void main()
     vec3 V = normalize(CameraPosition_worldspace - FragmentPosition_worldspace);
     vec3 R = normalize(reflect(-L, N));
 
-    float distance = 1; //length(LightPosition_worldspace - FragmentPosition_worldspace); 
+    float distance = length(LightPosition_worldspace - FragmentPosition_worldspace);
 
-    float cosTheta = max(dot(N, L), 0);
-	float cosPhi = max(dot(R, V), 0);
+    float cosTheta = clamp(dot(N, L), 0, 1);
+	float cosPhi = clamp(dot(R, V), 0, 1);
 
     float alpha = 1.0;
     float pick = 1.0;
@@ -43,12 +43,10 @@ void main()
         alpha = 0.8;
     }
     
-    vec3 Color = vec3
-    (
-        ka * Mat_ac + 
-        kd * Mat_dc * cosTheta +
-        ks * pow(cosPhi, pc) / (distance * distance) * pick
-    );
+    vec3 Color = 
+    ka * Mat_ac + 
+    kd * Mat_dc * cosTheta / (distance*distance)+ 
+    ks * pow(cosPhi, pc) * pick / (distance*distance);
 
     gl_FragColor = vec4(pow(Color, vec3(1.0/GAMMA)), alpha);
 }

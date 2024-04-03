@@ -1,67 +1,131 @@
 {
+    "Metal Guitar - 6.99$":
+    {
+        "name": "Tuning Machines",
+        "ka": 1,
+        "kd": 1,
+        "ks": 1,
+        "pc": 20,
+        "ac": [0.1, 0.1, 0.1],
+        "dc": [0.1, 0.1, 0.1] 
+    },
     "Accoustic Guitar":
     {
-        "Body": {},
-        "Bridge": {},
-        "BridgePins": {},
-        "NeckHead": {},
-        "Strings": {},
-        "TuningPegs": {}
-
-    },
-    "Gibson ES-335":
-    {
-        "Body": {},
-        "Knobs": {},
-        "Nut": {},
-        "TuningPegs": {},
-        "Strings": {},
-        "GibsonLogo": {"tell": false},
-        "PickGuard": {},
-        "SwitchPlate": {"tell": false},
-        "PickupSwitch": {},
-        "JackInput": {},
-        "Frets": {},
-        "Fretboard": {"tell": false},
-        "NeckHead": {},
-        "Pickups": {},
-        "FretMarks": {},
-        "Misc": {"tell": false},
-        "Bridge": {}
-    },
-    "Gibson SG Standard":
-    {
-        "Description": "This is a \npretty guitor :)",
-        "Backplate": {},
+        "Description": "The acoustic guitar, stemming from ancient predecessors like the lute and oud, has evolved into a versatile instrument beloved for its rich tonal qualities.\n\nWith steel-string guitars offering bright tones for folk, country, rock, and pop, and classical guitars providing warm sounds for classical and flamenco, the acoustic guitar caters to a wide array of musical styles.\n\nAs an iconic instrument capable of evoking emotions across genres, the acoustic guitar remains cherished by musicians worldwide.",
         "Body": {
             "name": "Body",
             "ka": 1,
             "kd": 1,
-            "ks": 1,
-            "pc": 10,
-            "ac": [0.2, 0, 0],
-            "dc": [0.5, 0, 0], 
-            "description": "Body style: SG\nBody material: Solid Mahogany\nBody finish: Nitrocellulose"
+            "ks": 0.3,
+            "pc": 50,
+            "ac": [0.25, 0.125, 0.05],
+            "dc": [0.5, 0.25, 0.1],
+            "description": "Material: Mahogany\nType: Hollow\nStyle: Grand Auditorium\n\nThe acoustic guitar body is typically crafted from wood. Hollow guitars produce tones of great depth."
         },
         "Bridge": {
             "name": "Bridge",
             "ka": 1,
             "kd": 1,
-            "ks": 1,
-            "pc": 20,
-            "ac": [0.1, 0.1, 0.1],
-            "dc": [0.8, 0.6, 0.5], 
-            "description": "Description: Tuning component\nFunction: Adjust height of strings"
+            "ks": 0.2,
+            "pc": 50,
+            "ac": [0.15, 0.05, 0.015],
+            "dc": [0.3, 0.1, 0.03],
+            "description": "Material: Mahogany\n\nServes as the anchor point for the strings, transmitting their vibrations to the instrument's body to produce its distinctive tone."
         },
-        "Frets": {
-            "name": "Frets",
+        "BridgePins": {
+            "name": "Bridge Pins",
+            "ka": 1,
+            "kd": 1,
+            "ks": 0.2,
+            "pc": 50,
+            "ac": [0.43, 0.38, 0.265],
+            "dc": [0.86, 0.76, 0.53],
+            "description": "Size: 0.210\"\nFit: Larrive D-03R\n\nBridge pins, typically made of materials like plastic, bone, or ebony, secure the strings to the bridge of an acoustic guitar."
+        },
+        "NeckHead": {
+            "name": "Neck",
+            "ka": 1,
+            "kd": 1,
+            "ks": 0.2,
+            "pc": 50,
+            "ac": [0.43, 0.38, 0.265],
+            "dc": [0.86, 0.76, 0.53],
+            "description": "Profile: Rounded\nFret Count: 19\nFingerboard Material: Rosewood\nRadius: 304.8 mm / 12 in\n\nServes as the guitar's central support structure, housing the fretboard and strings, and significantly influencing the instrument's playability, comfort, and overall tone."
+        },
+        "Strings": {
+            "name": "Strings",
             "ka": 1,
             "kd": 1,
             "ks": 1,
             "pc": 20,
+            "ac": [0.2, 0.2, 0.2],
+            "dc": [0.8, 0.8, 0.8],
+            "description": "Material: Nylon\nCount: 6\n\nCommonly used on classical guitars, nylon strings produce a warm and mellow tone with a smooth feel under the fingers.\n\n\nGauges:\n.012, .016, .024, .032, .042, .053"
+        },
+        "TuningPegs": {
+            "name": "Tuning Machines",
+            "ka": 1,
+            "kd": 1,
+            "ks": 0.6,
+            "pc": 20,
+            "ac": [0.2, 0.2, 0.2],
+            "dc": [0.8, 0.6, 0.5], 
+            "description": "Format: Clover\n\nEssential components located on the headstock of an acoustic guitar, facilitating precise adjustment of string tension to achieve accurate pitch."
+        }
+    },
+    "Gibson ES-335":
+    {
+        "Description": "The Gibson ES-335 is an iconic semi-hollowbody electric guitar celebrated for its innovative design and versatile sound. Introduced in 1958, it features a distinctive double-cutaway body with a center block running through the body to reduce feedback while retaining the rich resonance of a hollowbody instrument.\n\nThe ES-335's combination of solid construction and hollow wings produces a unique tone prized by musicians across various genres, including jazz, blues, rock, and beyond.\n\nRenowned players such as BB King, Chuck Berry, and Eric Clapton have all wielded the ES-335, showcasing its adaptability and enduring appeal in the realm of electric guitars.",
+        "Body": {
+            "name": "Body",
+            "ka": 1,
+            "kd": 0,
+            "ks": 1,
+            "pc": 10,
+            "ac": [1, 0.89, 0.36],
+            "dc": [1, 0.89, 0.36],
+            "description": "Design: Semi-Hollow\nMaterial: Maple\nFinish: \nGloss Nitrocellulose Lacquer\n\nA semi-hollow design crafted with a laminated maple top, back, and sides, providing a warm, resonant tone with reduced susceptibility to feedback."
+        },
+        "Knobs": {
+            "name": "Control Knobs",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 15,
+            "ac": [0.1, 0.1, 0.1],
+            "dc": [0.05, 0.05, 0.05], 
+            "description": "Volume knobs: 2\nTone knobs: 2\n\nTo dial in tone and volume, giving you the power to sculpt precise sound characteristics."
+
+        },
+        "Nut": {
+            "name": "Nut",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 80,
+            "ac": [0.71, 0.69, 0.65],
+            "dc": [0.71, 0.69, 0.65],
+            "description": "Material: Graph Tech\nWidth: 43.053 mm / 1.695 in\n\nMaintains proper string spacing and height, and ensuring accurate intonation."
+        },
+        "TuningPegs": {
+            "name": "Tuning Machines",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 10,
             "ac": [0.5, 0.5, 0.5],
             "dc": [0.8, 0.6, 0.5], 
-            "description": "Fret count: 22\nFret format: Authentic Medium-Jumbo"
+            "description": "Format: Keystone Buttons\nStyle: Vintage Deluxe\n\nGibson's modern tuner set with metal buttons help to maintain the value of the instrument while ensuring precision tuning."
+        },
+        "Strings": {
+            "name": "Strings",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 20,
+            "ac": [0.2, 0.2, 0.2],
+            "dc": [0.8, 0.8, 0.8],
+            "description": "Material: Nickel-plated Steel\nCount: 6\n\nIncredible brightness and sustain. Pure nickel strings provide a warmer, smoother tone with a vintage feel.\n\nGauges:\n.010, .013, .017, .026, .036, .046"
         },
         "GibsonLogo": {
             "name": "Gibson Logo",
@@ -70,58 +134,272 @@
             "ks": 1,
             "pc": 20,
             "ac": [0, 0.0, 0.0],
-            "dc": [0.1, 0.1, 0.1], 
-            "description": "Description: The Gibson trademark"
+            "dc": [0.0, 0.0, 0.0], 
+            "description": "The Gibson Logo\n\nSignifies authenticity and quality craftsmanship."
+        },
+        "PickGuard": {
+            "name": "Pick Guard",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 10,
+            "ac": [0, 0, 0],
+            "dc": [0, 0, 0],
+            "description": "Format: Black 5-Ply\n\nServes to protect the body from scratches and damage caused by the pick during playing."
+        },
+        "SwitchPlate": {
+            "name": "Switch Plate",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 10,
+            "ac": [0, 0, 0],
+            "dc": [0, 0, 0],
+            "description": "Black washer for the pickup switch."
+        },
+        "PickupSwitch": {
+            "name": "Pickup Switch",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 10,
+            "ac": [0, 0, 0],
+            "dc": [0.84, 0.76, 0.58],
+            "description": "Type: 3-Way Toggle\nWasher: Black\nTip: Cream\n\nTo select different combinations of pickups or switch between individual pickups.\n\nCombinations are:\nNeck | Neck + Bridge | Bridge"
         },
         "JackInput": {
-            "name": "Jack output",
+            "name": "Jack Output",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 10,
+            "ac": [0.4, 0.3, 0.25],
+            "dc": [0.1, 0.1, 0.1], 
+            "description": "Diameter: 1/4\"\n\nInterface for connecting to amplifiers and making the instrument sing."
+        },
+        "Frets": {
+            "name": "Frets",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 10,
+            "ac": [0.5, 0.5, 0.5],
+            "dc": [0.8, 0.6, 0.5], 
+            "description": "Format: Medium Jumbo\nCount: 22\n\nFrets are slightly incurved, facilitating smooth string bending and vibrato techniques."
+        },
+        "Fretboard": {
+            "name": "Fretboard",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 40,
+            "ac": [0.3, 0.3, 0.29],
+            "dc": [0.3, 0.3, 0.29],
+            "description": "Scale: 628.65 mm / 24.75 in\nRadius: 304.8 mm / 12 in\nMaterial: Rosewood\n\nThe playground of the guitar. Usually of a different coating material for the aesthetic."
+        },
+        "NeckHead": {
+            "name": "Neck",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 20,
+            "ac": [0,0,0],
+            "dc": [0,0,0],
+            "description": "Profile: Rounded C\n\nRounder shape, comfortable feel for the fretting hand, and accessible lower frets."
+        },
+        "Pickups": {
+            "name": "Pickups",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 20,
+            "ac": [0.1, 0.1, 0.1],
+            "dc": [0.8, 0.6, 0.5],
+            "description": "Neck Pickup: Rythm T-Type\nBridge Pickup: Lead T-Type\nType: Humbucker\n\nThe neck pickup, positioned closer to the guitar's neck, tends to produce a smoother and warmer tone, ideal for jazz, blues, and clean rhythm playing."
+        },
+        "FretMarks": {
+            "name": "Fret Marks",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 10,
+            "ac": [0.84, 0.76, 0.58],
+            "dc": [0.84, 0.76, 0.58],
+            "description": "Style: Block\n\nMark the position of the frets. "
+        },
+        "Misc": {
+            "name": "Miscellaneous",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 10,
+            "ac": [0.5, 0.5, 0.5],
+            "dc": [0.8, 0.6, 0.5], 
+            "description": "Screws, nuts, and aluminum parts to keep the different parts fixed together."
+        },
+        "Bridge": {
+            "name": "Bridge",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 20,
+            "ac": [0.1, 0.1, 0.1],
+            "dc": [0.8, 0.6, 0.5],
+            "description": "Design: ABR-1 Tune-O-Matic\nMaterial: Aluminum\n\nTuning piece used for precise intonation and adjusting string height, ensuring optimal playability and tuning stability."
+        }
+    },
+    "Gibson SG Standard":
+    {
+        "Description": "The Gibson SG, an abbreviation for \"Solid Guitar,\" is a revered electric guitar celebrated for its iconic double-cutaway design, facilitating effortless access to higher frets and ensuring a comfortable playing experience.\n\nOriginally introduced in 1961 as a reimagining of the Les Paul model, the SG swiftly garnered favor among guitarists for its lightweight yet resonant mahogany body, delivering a commanding and adaptable tone suited for an array of musical genres.\n\nWith its sleek aesthetics and aggressive sound, the SG has become a staple in rock and blues, notably championed by luminaries such as Angus Young of AC/DC and Tony Iommi of Black Sabbath, while also finding resonance in other genres such as jazz and alternative rock. Its enduring legacy cements the Gibson SG as an emblematic instrument in the pantheon of electric guitars.",
+        "Backplate": {
+            "name": "Backplate",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 80,
+            "ac": [0, 0, 0],
+            "dc": [0.0, 0.0, 0.0],
+            "description": "Covers the electronic cavity in the back of the guitar body. Inside are electronics, including pickups, volume and tone controls."
+        },
+        "Body": {
+            "name": "Body",
+            "ka": 1,
+            "kd": 1,
+            "ks": 0,
+            "pc": 100,
+            "ac": [0.5, 0, 0],
+            "dc": [0.5, 0, 0], 
+            "description": "Style: SG\nMaterial: Solid Mahogany\nFinish: Nitrocellulose\n\nThe Gibson SG body is renowned for its lightweight, comfortable design with a slim taper neck, providing easy access to higher frets for versatile playing styles."
+        },
+        "Bridge": {
+            "name": "Bridge",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 5,
+            "ac": [0.3, 0.3, 0.3],
+            "dc": [0.8, 0.8, 0.8],
+            "description": "Design: Nashville Tune-O-Matic\nMaterial: Aluminum\n\nTuning piece used for precise intonation and adjusting string height, ensuring optimal playability and tuning stability."
+        },
+        "Frets": {
+            "name": "Frets",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 20,
+            "ac": [0.05, 0.05, 0.05],
+            "dc": [0.8, 0.8, 0.8],
+            "description": "Format: Authentic Medium-Jumbo\nCount: 22\n\nFrets are slightly incurved, facilitating smooth string bending and vibrato techniques."
+        },
+        "GibsonLogo": {
+            "name": "Gibson Logo",
             "ka": 1,
             "kd": 1,
             "ks": 1,
             "pc": 20,
             "ac": [0, 0.0, 0.0],
+            "dc": [0.0, 0.0, 0.0], 
+            "description": "The Gibson Logo\n\nSignifies authenticity and quality craftsmanship."
+        },
+        "JackInput": {
+            "name": "Jack Output",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 10,
+            "ac": [0.4, 0.3, 0.25],
             "dc": [0.1, 0.1, 0.1], 
-            "description": "Description: Outputs sound signals\nType: Jack\nFormat: Switchcraft"
+            "description": "Format: Switchcraft\nType: Jack\nDiameter: 1/4\"\n\nInterface for connecting to amplifiers and making the instrument scream."
         },
         "Knobs": {
             "name": "Control Knobs",
             "ka": 1,
             "kd": 1,
             "ks": 1,
-            "pc": 50,
-            "ac": [0.2, 0.1, 0.15],
-            "dc": [0.8, 0.6, 0.5], 
-            "description": "Description: Modify pickup qualities\nVolume knobs: 2\nTone knobs: 2"
+            "pc": 15,
+            "ac": [0.0, 0.0, 0.0],
+            "dc": [0.05, 0.05, 0.05], 
+            "description": "Volume knobs: 2\nTone knobs: 2\n\nTo dial in tone and volume, giving you the power to sculpt precise sound characteristics."
         },
         "Neck": {
             "name": "Neck",
             "ka": 1,
             "kd": 1,
-            "ks": 1,
+            "ks": 0,
             "pc": 10,
             "ac": [0.5, 0, 0],
             "dc": [0.5, 0, 0], 
-            "description": "Profile: Traditional 1960s SlimTaper™ C\nStyle: Thin\nFingerboard radius: 304.8mm/12in\nFingerboard material: Indian Rosewood\nHeadstock: Classic Gibson"
+            "description": "Profile: \nTraditional 1960s SlimTaper(TM) C\nFingerboard radius: 304.8mm/12in\nFingerboard material: Indian Rosewood\n\nSlim shape, comfortable feel for the fretting hand, and accessible lower frets."
         },
-        "Nut": {},
-        "PickGuard": {},
-        "PickupSwitch": {},
-        "Pickups": {},
+        "Nut": {
+            "name": "Nut",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 80,
+            "ac": [0.35, 0.445, 0.325],
+            "dc": [0.71, 0.69, 0.65],
+            "description": "Material: Graph Tech\nWidth: 43.05 mm / 1.694 in\n\nMaintains proper string spacing and height, and ensuring accurate intonation."
+        },
+        "PickGuard": {
+            "name": "Pick Guard",
+            "ka": 1,
+            "kd": 1,
+            "ks": 0.5,
+            "pc": 80,
+            "ac": [0, 0, 0],
+            "dc": [0, 0, 0],
+            "description": "Serves to protect the body from scratches and damage caused by the pick during playing. Also a signature decorative element of the SG."
+        },
+        "PickupSwitch": {
+            "name": "Pickup Switch",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 10,
+            "ac": [0, 0, 0],
+            "dc": [0.84, 0.76, 0.58],
+            "description": "Type: 3-Way Toggle\nWasher: Black\nTip: Cream\n\nTo select different combinations of pickups or switch between individual pickups.\n\nCombinations are:\nNeck | Neck + Bridge | Bridge"
+        },
+        "Pickups": {
+            "name": "Pickups",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 10,
+            "ac": [0.2, 0.2, 0.2],
+            "dc": [0.8, 0.6, 0.5], 
+            "description": "Neck Pickup: 490R\nBridge Pickup: 490T\nType: Humbucker\nMagnets: Alnico\n\nPowerful. Heavy tone. Very well suited for classic rock and blues."
+        },
         "Misc": {
             "name": "Miscellaneous",
             "ka": 1,
             "kd": 1,
             "ks": 1,
-            "pc": 20,
-            "ac": [0.1, 0.1, 0.1],
+            "pc": 10,
+            "ac": [0.2, 0.2, 0.2],
             "dc": [0.8, 0.6, 0.5], 
-            "description": "Description: Screws to keep it sturdy"
+            "description": "Screws, nuts, and aluminum parts to keep the different parts fixed together."
         },
-        "Strings": {},
-        "TuningPegs": {}
-    },
-    "Light":
-    {
-        "position": [0.0, -0.6, 0.0]
+        "Strings": {
+            "name": "Strings",
+            "ka": 1,
+            "kd": 1,
+            "ks": 1,
+            "pc": 20,
+            "ac": [0.05, 0.05, 0.05],
+            "dc": [0.8, 0.8, 0.8],
+            "description": "Material: Nickel-plated Steel\nCount: 6\n\nIncredible brightness and sustain. Pure nickel strings provide a warmer, smoother tone with a vintage feel.\n\nGauges:\n.010, .013, .017, .026, .036, .046"
+        },
+        "TuningPegs": {
+            "name": "Tuning Machines",
+            "ka": 1,
+            "kd": 1,
+            "ks": 0.6,
+            "pc": 20,
+            "ac": [0.5, 0.5, 0.5],
+            "dc": [0.8, 0.6, 0.5], 
+            "description": "Format: Kidney Tuner\n\nGibson's modern tuner set with metal buttons help to maintain the value of the instrument while ensuring precision tuning."
+        }
     }
 }
