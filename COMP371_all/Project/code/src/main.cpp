@@ -86,7 +86,7 @@ int main()
 
     // Set GL Model buffers
     const size_t NUMBER_OF_ENTITIES(entities.size());
-    size_t activeEntityIndex(0);
+    size_t activeEntityIndex(1);
     size_t activeModelIndex(0);
     bool selecting(false);
     Entity* entity = &entities[activeEntityIndex];
@@ -187,7 +187,7 @@ int main()
         //light.position = camera.position;
 
 
-        // ENTITY DRAWING =================================================
+        // TRANSFORMS ===============================================
         
         // T Matrices are sent to the shaders
         glm::mat4 ProjectionT = glm::perspective(glm::radians(camera.fov), camera.aspectRatio, camera.nearPlane, camera.farPlane);
@@ -198,6 +198,9 @@ int main()
 
         glm::mat4 ModelViewT = ViewT * ModelT;
         glm::mat4 ModelViewProjectionT = ProjectionT * ModelViewT;
+
+
+        // UNIFORMS =================================================
 
         // Camera and light uniforms
         glUseProgram(pickingShaderProgram);
@@ -214,17 +217,18 @@ int main()
         glUniformMatrix4fv(glGetUniformLocation(entityShaderProgram, "Model"), 1, GL_FALSE, glm::value_ptr(ModelT));
 
 
-        // ================================================================
+        // PICKING ==================================================
 
-        // Get selected model 'just in time'
         if (glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT) == GLFW_PRESS)
         {
             double xpos, ypos;
             glfwGetCursorPos(window, &xpos, &ypos);
 
+            // Draw with encoding shader
             glUseProgram(pickingShaderProgram);
             glutils_RenderEntity(entity, pickingShaderProgram);
 
+            // Retrieve pixel
             unsigned char pixelColor[4];
             glReadPixels(xpos, camera.screen_height - ypos, 1, 1, GL_RGBA, GL_UNSIGNED_BYTE, pixelColor);
 
@@ -240,6 +244,7 @@ int main()
                 activeModelIndex = model_index;
             }
 
+            // Clean buffer for actual rendering
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         }

@@ -337,7 +337,7 @@
             "kd": 1,
             "ks": 1,
             "pc": 80,
-            "ac": [0.35, 0.445, 0.325],
+            "ac": [0.35, 0.345, 0.325],
             "dc": [0.71, 0.69, 0.65],
             "description": "Material: Graph Tech\nWidth: 43.05 mm / 1.694 in\n\nMaintains proper string spacing and height, and ensuring accurate intonation."
         },
