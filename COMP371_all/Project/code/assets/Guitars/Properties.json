@@ -1,13 +1,14 @@
 {
     "Metal Guitar - 6.99$":
     {
-        "name": "Tuning Machines",
-        "ka": 1,
-        "kd": 1,
-        "ks": 1,
-        "pc": 20,
-        "ac": [0.1, 0.1, 0.1],
-        "dc": [0.1, 0.1, 0.1] 
+        "???": {
+            "ka": 1,
+            "kd": 1,
+            "ks": 0,
+            "pc": 1,
+            "ac": [0, 0, 0],
+            "dc": [0, 0, 0]
+        }
     },
     "Accoustic Guitar":
     {

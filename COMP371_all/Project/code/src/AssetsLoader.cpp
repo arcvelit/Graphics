@@ -62,7 +62,7 @@ void loadAssetProperties(const char* json_file_path, std::vector<Entity> &entity
         for(Model &model : entity.entity_parts)
         {
             // Get model from json
-            // matching model.part_tage
+            // matching model.part_tag
             auto part = guitar[model.part_tag];
 
             if (part.contains("name")) model.name = part["name"];
