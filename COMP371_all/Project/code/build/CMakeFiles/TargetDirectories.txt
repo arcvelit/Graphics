@@ -1,3 +1,0 @@
-/COMP371/Project/code/build/CMakeFiles/rebuild_cache.dir
-/COMP371/Project/code/build/CMakeFiles/edit_cache.dir
-/COMP371/Project/code/build/CMakeFiles/GuitarShowcase.dir
