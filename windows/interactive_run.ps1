@@ -37,7 +37,7 @@ System.String. The Path to bind to `/COMP371` in container. Must be absolute.
         Usage
     }
 
-    $WSL_IP_ADDR = "127.0.1.1"
+    $WSL_IP_ADDR = Get-WSL-IP
 
     if (-Not "${WSL_IP_ADDR}") 
     {
@@ -47,7 +47,7 @@ System.String. The Path to bind to `/COMP371` in container. Must be absolute.
 
     # Set $DISPLAY variable (Defaulting to 0.0)
 
-    $DISPLAY = "172.31.0.1:0.0"
+    $DISPLAY = "${WSL_IP_ADDR}:0.0"
 
 # Breaking down the docker command:
 #
