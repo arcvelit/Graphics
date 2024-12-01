@@ -30,7 +30,7 @@ Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser
 
 #### Windows
 
-[Xming](https://sourceforge.net/projects/xming/) or [VcXsrv](https://sourceforge.net/projects/vcxsrv/)
+[Xming](https://sourceforge.net/projects/xming/) or [VcXsrv](https://sourceforge.net/projects/vcxsrv/)  
 **NOTE:** VCXSRV worked with no problem on my machine while XMING created issues.
 
 Then run XLaunch with these configuration options:
