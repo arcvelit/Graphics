@@ -37,7 +37,7 @@ System.String. The Path to bind to `/COMP371` in container. Must be absolute.
         Usage
     }
 
-    $WSL_IP_ADDR = Get-WSL-IP
+    $WSL_IP_ADDR = (Get-NetIPAddress -InterfaceAlias "vEthernet (WSL)" -AddressFamily IPv4).IPAddress
 
     if (-Not "${WSL_IP_ADDR}") 
     {

@@ -1,3 +1,0 @@
-/COMP371/Lab_capsules/capsule4/build/CMakeFiles/edit_cache.dir
-/COMP371/Lab_capsules/capsule4/build/CMakeFiles/rebuild_cache.dir
-/COMP371/Lab_capsules/capsule4/build/CMakeFiles/capsule04.dir

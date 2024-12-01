@@ -1,3 +1,0 @@
-/COMP371/Lab_capsules/capsule4/shaders/CMakeFiles/edit_cache.dir
-/COMP371/Lab_capsules/capsule4/shaders/CMakeFiles/rebuild_cache.dir
-/COMP371/Lab_capsules/capsule4/shaders/CMakeFiles/capsule04.dir
